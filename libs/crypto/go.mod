@@ -1,4 +1,4 @@
-module nguoihanoi/libs
+module nguoihanoi/crypto
 
 go 1.24.6
 
