@@ -13,15 +13,15 @@ type jwtClass struct {
 	//radius float64 // Private field
 }
 
-func JWT() *jwtClass {
+func (c *CryptoClass) JWT() *jwtClass {
 	return &jwtClass{}
 }
 
-func (r *jwtClass) SetToken(inJwtToken string, inPrefixToken string) {
+func (j *jwtClass) SetToken(inJwtToken string, inPrefixToken string) {
 	secretKey = []byte(inJwtToken)
 	prefixToken = inPrefixToken
 }
-func (r *jwtClass) CreateToken(inData any) (string, time.Time, error) {
+func (j *jwtClass) CreateToken(inData any) (string, time.Time, error) {
 	nextTime := time.Now().Add(time.Hour * 24)
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
@@ -37,7 +37,7 @@ func (r *jwtClass) CreateToken(inData any) (string, time.Time, error) {
 	return tokenString, nextTime, nil
 }
 
-func (r *jwtClass) VerifyToken(tokenString string) (any, error) {
+func (j *jwtClass) VerifyToken(tokenString string) (any, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (any, error) {
 		return secretKey, nil
 	})
