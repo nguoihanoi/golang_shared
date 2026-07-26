@@ -1,7 +1,7 @@
 package libs
 
 import (
-	crypto "./crypto"
+	crypto "github.com/nguoihanoi/golang_shared/libs/crypto"
 )
 
 func Crypto() *crypto.CryptoClass {
