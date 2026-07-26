@@ -1,13 +1,20 @@
 package libs
 
 import (
-	crypto "github.com/nguoihanoi/golang_shared/libs/crypto"
+	"log"
+	"time"
+
+	libCrypto "github.com/nguoihanoi/golang_shared/libs/crypto"
+	libTime "github.com/nguoihanoi/golang_shared/libs/time"
 )
 
-func Crypto() *crypto.CryptoClass {
-	return &crypto.CryptoClass{}
+func Crypto() *libCrypto.CryptoClass {
+	return &libCrypto.CryptoClass{}
+}
+func Time() *libTime.TimeClass {
+	return &libTime.TimeClass{}
 }
 
-func test() {
-	result := Crypto()
+func main() {
+	log.Println(Time().FormatDate(time.Now()))
 }
