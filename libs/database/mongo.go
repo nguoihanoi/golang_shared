@@ -40,7 +40,7 @@ func NewDatabase(mongoClient *mongo.Client, dbName string) *DatabaseClass {
 	return &DatabaseClass{database: myDatabase}
 }
 
-type collectionClass struct {
+type CollectionClass struct {
 	collection *mongo.Collection
 }
 
@@ -55,12 +55,12 @@ type LapTrinhVien struct {
 	NgonNguChuyenMon string
 }
 
-func (db *DatabaseClass) NewCollection(inCollection string) *collectionClass {
+func (db *DatabaseClass) NewCollection(inCollection string) *CollectionClass {
 	myCollection := db.database.Collection(inCollection)
-	return &collectionClass{collection: myCollection}
+	return &CollectionClass{collection: myCollection}
 }
 
-func (col *collectionClass) CreateIndex(indexModel mongo.IndexModel) {
+func (col *CollectionClass) CreateIndex(indexModel mongo.IndexModel) {
 	libProcess.Try(func() {
 		name, err := col.collection.Indexes().CreateOne(context.TODO(), indexModel)
 		if err != nil {
@@ -72,7 +72,7 @@ func (col *collectionClass) CreateIndex(indexModel mongo.IndexModel) {
 	})
 }
 
-func (col *collectionClass) DeleteIndex(inName string) {
+func (col *CollectionClass) DeleteIndex(inName string) {
 	libProcess.Try(func() {
 		col.collection.Indexes().DropOne(context.TODO(), inName)
 		log.Println("Remove index: ", inName)
@@ -81,7 +81,7 @@ func (col *collectionClass) DeleteIndex(inName string) {
 	})
 }
 
-func (col *collectionClass) GetListIndex(nameIndex any) (err error) {
+func (col *CollectionClass) GetListIndex(nameIndex any) (err error) {
 	var cursor *mongo.Cursor
 	libProcess.Try(func() {
 		cursor, err = col.collection.Indexes().List(context.TODO())
@@ -120,7 +120,7 @@ func structToBsonM(v any) (bSon.M, error) {
 	return doc, nil
 }
 
-func (col *collectionClass) Create(insertData any) (output string) {
+func (col *CollectionClass) Create(insertData any) (output string) {
 	libProcess.Try(func() {
 		createData, _ := structToBsonM(insertData)
 		id := primitive.NewObjectID().Hex()
@@ -140,7 +140,7 @@ func (col *collectionClass) Create(insertData any) (output string) {
 	return output
 }
 
-func (col *collectionClass) UpdateId(inId string, inUpdateData bSon.M) bool {
+func (col *CollectionClass) UpdateId(inId string, inUpdateData bSon.M) bool {
 	output := false
 	libProcess.Try(func() {
 		filter := bSon.M{"_id": inId}
@@ -160,7 +160,7 @@ func (col *collectionClass) UpdateId(inId string, inUpdateData bSon.M) bool {
 	return output
 }
 
-func (col *collectionClass) DeleteId(inId string) bool {
+func (col *CollectionClass) DeleteId(inId string) bool {
 	output := false
 	libProcess.Try(func() {
 		filter := bSon.M{"_id": inId}
@@ -183,7 +183,7 @@ func (col *collectionClass) DeleteId(inId string) bool {
 	return output
 }
 
-func (col *collectionClass) RemoveId(inId string) bool {
+func (col *CollectionClass) RemoveId(inId string) bool {
 	output := false
 	libProcess.Try(func() {
 		filter := bSon.M{"_id": inId}
