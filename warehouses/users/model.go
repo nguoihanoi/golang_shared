@@ -3,17 +3,21 @@ package users
 import (
 	"time"
 
+	libCache "github.com/nguoihanoi/golang_shared/libs/cache"
 	libCrypto "github.com/nguoihanoi/golang_shared/libs/crypto"
 	libDb "github.com/nguoihanoi/golang_shared/libs/database"
 	libUtilities "github.com/nguoihanoi/golang_shared/libs/utilities"
+	"github.com/redis/go-redis/v9"
 	bSon "go.mongodb.org/mongo-driver/v2/bson"
 )
 
 var dbMongo *libDb.DatabaseClass
 var userCollection *libDb.CollectionClass
+var userCache *libCache.Cache
 
-func InitModel(inDb *libDb.DatabaseClass) {
+func InitModel(inDb *libDb.DatabaseClass, inRedisClient *redis.Client, inPrefix string) {
 	dbMongo = inDb
+	userCache = libCache.NewCache(inRedisClient, inPrefix)
 	userCollection = dbMongo.NewCollection("users")
 }
 
@@ -46,10 +50,19 @@ func CreateUser(insertData User) (output string) {
 
 func UpdateUser(inId string, inUpdateData bSon.M) bool {
 	output := userCollection.UpdateId(inId, inUpdateData)
+	if output == true {
+		userCache.Del("user:" + inId)
+	}
 	return output
 }
 
-func GetUserById(inId string) (output User) {
+func GetUserById(inId string, isCache bool) (output User) {
+	if isCache == true {
+		cacheData := userCache.Get("user:" + inId)
+		if cacheData != nil {
+			return cacheData.(User)
+		}
+	}
 	result := userCollection.FindById(inId)
 	if result != nil {
 		output = result.(User)

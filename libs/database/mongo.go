@@ -8,6 +8,7 @@ import (
 
 	libProcess "github.com/nguoihanoi/golang_shared/libs/process"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/v2/bson"
 	bSon "go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
@@ -221,6 +222,69 @@ func (col *CollectionClass) FindOne(filter bSon.M) (output any) {
 	status := true
 	libProcess.Try(func() {
 		err = col.collection.FindOne(context.TODO(), filter).Decode(&output)
+	}).Catch(func(e libProcess.E) {
+		log.Println(e)
+		status = false
+	})
+	if err != nil || status == false {
+		return nil
+	}
+	return output
+}
+
+func (col *CollectionClass) Find(filter bSon.M, inSortOrder bSon.M, inPage int64, inLimit int64) (output []any) {
+	var err error
+	var cursor *mongo.Cursor
+	status := true
+	libProcess.Try(func() {
+		opts := options.Find().SetSort(inSortOrder)
+		if inPage > 0 {
+			opts = opts.SetSkip((inPage - 1) * inLimit)
+		}
+		if inLimit > 0 {
+			opts = opts.SetLimit(inLimit)
+		}
+		cursor, err = col.collection.Find(context.TODO(), filter, opts)
+		if err == nil {
+			err = cursor.All(context.TODO(), &output)
+		}
+	}).Catch(func(e libProcess.E) {
+		log.Println(e)
+		status = false
+	})
+	if err != nil || status == false {
+		return nil
+	}
+	return output
+}
+
+func (col *CollectionClass) Count(filter bSon.M) (output int64) {
+	var err error
+	status := true
+	libProcess.Try(func() {
+		output, err = col.collection.CountDocuments(context.TODO(), filter)
+	}).Catch(func(e libProcess.E) {
+		log.Println(e)
+		status = false
+	})
+	if err != nil || status == false {
+		output = 0
+	}
+	return output
+}
+
+func (col *CollectionClass) Pipe(matchFilter bSon.D, groupFilter bSon.D, inSortOrder bSon.D) (output []any) {
+	var err error
+	var cursor *mongo.Cursor
+	status := true
+	libProcess.Try(func() {
+		matchStage := bSon.D{{Key: "$match", Value: matchFilter}}
+		groupStage := bson.D{{Key: "$group", Value: groupFilter}}
+		sortStage := bson.D{{Key: "$sort", Value: inSortOrder}}
+		cursor, err = col.collection.Aggregate(context.TODO(), mongo.Pipeline{matchStage, groupStage, sortStage})
+		if err == nil {
+			err = cursor.All(context.TODO(), &output)
+		}
 	}).Catch(func(e libProcess.E) {
 		log.Println(e)
 		status = false

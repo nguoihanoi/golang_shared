@@ -16,11 +16,11 @@ type Cache struct {
 }
 
 // NewCache creates a new database logger
-func NewCache(inDb *redis.Client) *Cache {
+func NewCache(inDb *redis.Client, inPrefix string) *Cache {
 	return &Cache{
 		Db:     inDb,
 		Ctx:    context.Background(),
-		Prefix: "admin_",
+		Prefix: inPrefix,
 	}
 }
 
@@ -46,7 +46,7 @@ func (cache *Cache) Get(inKey string) any {
 	if err == nil {
 		return formatData(cacheData)
 	}
-	return err
+	return nil
 }
 
 func (cache *Cache) Del(inKey string) {
@@ -66,7 +66,7 @@ func (cache *Cache) HGet(inKey string, inProperty string) any {
 	if err == nil {
 		return formatData(cacheData)
 	}
-	return err
+	return nil
 }
 
 func (cache *Cache) HDel(inKey string, inProperty string) {
