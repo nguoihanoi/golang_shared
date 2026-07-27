@@ -14,7 +14,7 @@ type stringClass struct {
 	//radius float64 // Private field
 }
 
-func (s *stringClass) String() *stringClass {
+func String() *stringClass {
 	return &stringClass{}
 }
 
