@@ -1,0 +1,6 @@
+github.com/golang-jwt/jwt/v5 v5.3.1 h1:kYf81DTWFe7t+1VvL7eS+jKFVWaUnK9cB1qbwn63YCY=
+github.com/golang-jwt/jwt/v5 v5.3.1/go.mod h1:fxCRLWMO43lRc8nhHWY6LGqRcf+1gQWArsqaEUEa5bE=
+github.com/nguoihanoi/golang_shared/libs/crypto v0.0.0-20260727103103-eab92e6e930e h1:g67c7OGUP5zZaBytAdtLe1yuWBEiZEVsYiWE2Nnm8qY=
+github.com/nguoihanoi/golang_shared/libs/crypto v0.0.0-20260727103103-eab92e6e930e/go.mod h1:gghUNpZvckQOW6gJ3D/cvBt0YnSKBMkANIm1CwFLBsI=
+github.com/nguoihanoi/golang_shared/libs/process v0.0.0-20260727103103-eab92e6e930e h1:5VyWIBDf819eE77rVkxtPMnQouyScv5Oh8uAyz11q1A=
+github.com/nguoihanoi/golang_shared/libs/process v0.0.0-20260727103103-eab92e6e930e/go.mod h1:u8m/pOkVEnozantr7T/xc9lAfD2/AzzdZI9oPJBhqws=

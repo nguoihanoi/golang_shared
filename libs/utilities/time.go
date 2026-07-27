@@ -1,4 +1,4 @@
-package time
+package utilities
 
 import (
 	"time"
@@ -6,6 +6,10 @@ import (
 
 type TimeClass struct {
 	//radius float64 // Private field
+}
+
+func Time() *TimeClass {
+	return &TimeClass{}
 }
 
 // ============================================================================
