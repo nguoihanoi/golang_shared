@@ -200,3 +200,33 @@ func (col *CollectionClass) RemoveId(inId string) bool {
 	})
 	return output
 }
+
+func (col *CollectionClass) FindById(inId string) (output any) {
+	var err error
+	status := true
+	libProcess.Try(func() {
+		filter := bSon.M{"_id": inId}
+		err = col.collection.FindOne(context.TODO(), filter).Decode(&output)
+	}).Catch(func(e libProcess.E) {
+		log.Println(e)
+		status = false
+	})
+	if err != nil || status == false {
+		return nil
+	}
+	return output
+}
+func (col *CollectionClass) FindOne(filter bSon.M) (output any) {
+	var err error
+	status := true
+	libProcess.Try(func() {
+		err = col.collection.FindOne(context.TODO(), filter).Decode(&output)
+	}).Catch(func(e libProcess.E) {
+		log.Println(e)
+		status = false
+	})
+	if err != nil || status == false {
+		return nil
+	}
+	return output
+}
