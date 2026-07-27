@@ -31,13 +31,13 @@ func MongoConnect(mongoURI string) *mongo.Client {
 	return mongoClient
 }
 
-type databaseClass struct {
+type DatabaseClass struct {
 	database *mongo.Database
 }
 
-func NewDatabase(mongoClient *mongo.Client, dbName string) *databaseClass {
+func NewDatabase(mongoClient *mongo.Client, dbName string) *DatabaseClass {
 	myDatabase := mongoClient.Database(dbName)
-	return &databaseClass{database: myDatabase}
+	return &DatabaseClass{database: myDatabase}
 }
 
 type collectionClass struct {
@@ -55,7 +55,7 @@ type LapTrinhVien struct {
 	NgonNguChuyenMon string
 }
 
-func (db *databaseClass) NewCollection(inCollection string) *collectionClass {
+func (db *DatabaseClass) NewCollection(inCollection string) *collectionClass {
 	myCollection := db.database.Collection(inCollection)
 	return &collectionClass{collection: myCollection}
 }
