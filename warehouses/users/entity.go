@@ -2,11 +2,12 @@ package users
 
 import (
 	"time"
+
+	libDb "github.com/nguoihanoi/golang_shared/libs/database"
 )
 
 // User represents a user in the system
 type User struct {
-	ID               string    `bson:"_id,omitempty" json:"_id,omitempty"`
 	AccountType      string    `bson:"account_type" json:"account_type"`
 	Email            string    `bson:"email" json:"email"`
 	LanguageCode     string    `bson:"language_code" json:"language_code"`
@@ -21,9 +22,7 @@ type User struct {
 	AuthProvider     string    `bson:"auth_provider,omitempty" json:"auth_provider,omitempty"` // "google", "facebook", or empty for local auth
 	ProviderID       string    `bson:"provider_id,omitempty" json:"-"`                         // ID from the social provider
 	TwoFactorEnabled bool      `bson:"two_factor_enabled" json:"two_factor_enabled"`           // Whether 2FA is enabled
-	IsDelete         bool      `bson:"is_delete" json:"is_delete"`
-	CreatedAt        time.Time `bson:"created_at" json:"created_at"`
-	UpdatedAt        time.Time `bson:"updated_at" json:"updated_at"`
+	libDb.CollectionBase
 }
 
 // UserMeta represents a user meta in the system

@@ -45,7 +45,7 @@ type CollectionClass struct {
 }
 
 type CollectionBase struct {
-	ID        string
+	ID        string    `bson:"_id,omitempty" json:"_id,omitempty"`
 	Delete    bool      `bson:"delete" json:"delete"`
 	CreatedAt time.Time `bson:"created_at" json:"created_at"`
 	UpdatedAt time.Time `bson:"updated_at" json:"updated_at"`
