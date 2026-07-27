@@ -13,7 +13,7 @@ type JwtClass struct {
 	//radius float64 // Private field
 }
 
-func (c *CryptoClass) JWT() *JwtClass {
+func JWT() *JwtClass {
 	return &JwtClass{}
 }
 

@@ -9,7 +9,7 @@ import (
 	"io"
 )
 
-func (c *CryptoClass) GetKeyAES() string {
+func GetKeyAES() string {
 	bytes := make([]byte, 32) //generate a random 32 byte key for AES-256
 	if _, err := rand.Read(bytes); err != nil {
 		panic(err.Error())
@@ -18,7 +18,7 @@ func (c *CryptoClass) GetKeyAES() string {
 }
 
 // EncryptAES detail...
-func (c *CryptoClass) EncryptAES(stringToEncrypt string, keyString string) (encryptedString string) {
+func EncryptAES(stringToEncrypt string, keyString string) (encryptedString string) {
 	//Since the key is in string, we need to convert decode it to bytes
 	key, _ := hex.DecodeString(keyString)
 	plainText := []byte(stringToEncrypt)
@@ -49,7 +49,7 @@ func (c *CryptoClass) EncryptAES(stringToEncrypt string, keyString string) (encr
 }
 
 // DecryptAES detail..
-func (c *CryptoClass) DecryptAES(encryptedString string, keyString string) (string, error) {
+func DecryptAES(encryptedString string, keyString string) (string, error) {
 
 	key, _ := hex.DecodeString(keyString)
 	enc, _ := hex.DecodeString(encryptedString)

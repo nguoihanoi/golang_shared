@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 )
 
-func (c *CryptoClass) Md5(inValue string) string {
+func Md5(inValue string) string {
 	data := []byte(inValue)
 	hash := md5.Sum(data) // md5.Sum returns a [16]byte array
 

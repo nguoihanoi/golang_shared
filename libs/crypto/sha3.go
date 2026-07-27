@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 )
 
-func (c *CryptoClass) Sha3(inValue string) string {
+func Sha3(inValue string) string {
 	// Create a new SHA-512 hasher
 	hasher := sha512.New()
 
