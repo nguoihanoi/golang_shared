@@ -1,7 +1,6 @@
 package users
 
 import (
-	"log"
 	"time"
 
 	libCache "github.com/nguoihanoi/golang_shared/libs/cache"
@@ -60,12 +59,13 @@ func GetUserById(inId string, isCache bool) (output User) {
 	if isCache == true {
 		cacheData := userCache.Get("user:" + inId)
 		if cacheData != nil {
-			return cacheData.(User)
+			output, _ = cacheData.(User)
+			return output
 		}
 	}
 	result := userCollection.FindById(inId)
 	if result != nil {
-		output = result.(User)
+		output, _ = result.(User)
 	}
 	return output
 }
@@ -76,9 +76,8 @@ func GetUserByEmail(inEmail string, inId string) (output User) {
 		filter["_id"] = bSon.M{"$ne": inId}
 	}
 	result := userCollection.FindOne(filter)
-	log.Println(result)
 	if result != nil {
-		output = result.(User)
+		output, _ = result.(User)
 	}
 	return output
 }

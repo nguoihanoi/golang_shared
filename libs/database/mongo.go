@@ -217,11 +217,12 @@ func (col *CollectionClass) FindById(inId string) (output any) {
 	}
 	return output
 }
-func (col *CollectionClass) FindOne(filter bSon.M) (output any) {
+func (col *CollectionClass) FindOne(filter bSon.M) any {
 	var err error
+	var result any
 	status := true
 	libProcess.Try(func() {
-		err = col.collection.FindOne(context.TODO(), filter).Decode(output)
+		err = col.collection.FindOne(context.TODO(), filter).Decode(&result)
 	}).Catch(func(e libProcess.E) {
 		log.Println(e)
 		status = false
@@ -229,7 +230,7 @@ func (col *CollectionClass) FindOne(filter bSon.M) (output any) {
 	if err != nil || status == false {
 		return nil
 	}
-	return output
+	return result
 }
 
 func (col *CollectionClass) Find(filter bSon.M, inSortOrder bSon.M, inPage int64, inLimit int64) (output []any) {
