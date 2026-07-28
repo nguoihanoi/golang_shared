@@ -79,7 +79,9 @@ func GetUserByEmail(inEmail string, inId string) (output User) {
 	result := userCollection.FindOne(filter)
 	log.Println(result)
 	if result != nil {
-		output, _ = result.(User)
+		var ok2 bool
+		output, ok2 = result.(User)
+		log.Println(ok2)
 	}
 	return output
 }

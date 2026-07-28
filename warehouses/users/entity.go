@@ -2,13 +2,14 @@ package users
 
 import (
 	"time"
-
-	libDb "github.com/nguoihanoi/golang_shared/libs/database"
 )
 
 // User represents a user in the system
 type User struct {
-	libDb.CollectionBase
+	ID               string    `bson:"_id,omitempty" json:"_id,omitempty"`
+	Delete           bool      `bson:"delete" json:"delete"`
+	CreatedAt        time.Time `bson:"created_at" json:"created_at"`
+	UpdatedAt        time.Time `bson:"updated_at" json:"updated_at"`
 	AccountType      string    `bson:"account_type" json:"account_type"`
 	Email            string    `bson:"email" json:"email"`
 	LanguageCode     string    `bson:"language_code" json:"language_code"`
