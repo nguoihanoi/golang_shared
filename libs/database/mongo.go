@@ -185,35 +185,32 @@ func (col *CollectionClass) RemoveId(inId string) bool {
 	return output
 }
 
-func (col *CollectionClass) FindById(inId string) (output any) {
-	var err error
-	status := true
+func (col *CollectionClass) FindById(inId string, result any) bool {
+	output := true
 	libProcess.Try(func() {
 		filter := bSon.M{"_id": inId}
-		err = col.collection.FindOne(context.TODO(), filter).Decode(output)
+		err := col.collection.FindOne(context.TODO(), filter).Decode(result)
+		if err != nil {
+			output = false
+		}
 	}).Catch(func(e libProcess.E) {
 		log.Println(e)
-		status = false
+		output = false
 	})
-	if err != nil || status == false {
-		return nil
-	}
 	return output
 }
-func (col *CollectionClass) FindOne(filter bSon.M) any {
-	var err error
-	var result any
-	status := true
+func (col *CollectionClass) FindOne(filter bSon.M, result any) bool {
+	output := true
 	libProcess.Try(func() {
-		err = col.collection.FindOne(context.TODO(), filter).Decode(&result)
+		err := col.collection.FindOne(context.TODO(), filter).Decode(&result)
+		if err != nil {
+			output = false
+		}
 	}).Catch(func(e libProcess.E) {
 		log.Println(e)
-		status = false
+		output = false
 	})
-	if err != nil || status == false {
-		return nil
-	}
-	return result
+	return output
 }
 
 func (col *CollectionClass) Find(filter bSon.M, inSortOrder bSon.M, inPage int64, inLimit int64) (output []any) {
