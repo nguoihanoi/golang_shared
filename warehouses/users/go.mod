@@ -20,7 +20,7 @@ require (
 	github.com/muesli/termenv v0.16.0 // indirect
 	github.com/nguoihanoi/goCrypto v1.0.0 // indirect
 	github.com/nguoihanoi/golang_shared v1.0.0 // indirect
-	github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20260727162802-513589b21cd0 // indirect
+	github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20260728045141-222a099ee4af // indirect
 	github.com/nguoihanoi/golang_shared/libs/crypto v0.0.0-20260727103103-eab92e6e930e // indirect
 	github.com/nguoihanoi/golang_shared/libs/database v0.0.0-20260727110939-bdcfab1f94a6 // indirect
 	github.com/nguoihanoi/golang_shared/libs/process v0.0.0-20260727103103-eab92e6e930e // indirect

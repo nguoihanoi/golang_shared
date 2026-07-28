@@ -7,7 +7,6 @@ import (
 	libCrypto "github.com/nguoihanoi/golang_shared/libs/crypto"
 	libDb "github.com/nguoihanoi/golang_shared/libs/database"
 	libUtilities "github.com/nguoihanoi/golang_shared/libs/utilities"
-	"github.com/redis/go-redis/v9"
 	bSon "go.mongodb.org/mongo-driver/v2/bson"
 )
 
@@ -15,9 +14,9 @@ var dbMongo *libDb.DatabaseClass
 var userCollection *libDb.CollectionClass
 var userCache *libCache.Cache
 
-func InitModel(inDb *libDb.DatabaseClass, inRedisClient *redis.Client, inPrefix string) {
+func InitModel(inDb *libDb.DatabaseClass, inRedisClient *libCache.Cache) {
 	dbMongo = inDb
-	userCache = libCache.NewCache(inRedisClient, inPrefix)
+	userCache = inRedisClient
 	userCollection = dbMongo.NewCollection("users")
 }
 
