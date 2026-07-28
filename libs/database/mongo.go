@@ -185,32 +185,12 @@ func (col *CollectionClass) RemoveId(inId string) bool {
 	return output
 }
 
-func (col *CollectionClass) FindById(inId string, result any) bool {
-	output := true
-	libProcess.Try(func() {
-		filter := bSon.M{"_id": inId}
-		err := col.collection.FindOne(context.TODO(), filter).Decode(result)
-		if err != nil {
-			output = false
-		}
-	}).Catch(func(e libProcess.E) {
-		log.Println(e)
-		output = false
-	})
-	return output
+func (col *CollectionClass) FindById(inId string) *mongo.SingleResult {
+	filter := bSon.M{"_id": inId}
+	return col.collection.FindOne(context.TODO(), filter)
 }
-func (col *CollectionClass) FindOne(filter bSon.M, result any) bool {
-	output := true
-	libProcess.Try(func() {
-		err := col.collection.FindOne(context.TODO(), filter).Decode(&result)
-		if err != nil {
-			output = false
-		}
-	}).Catch(func(e libProcess.E) {
-		log.Println(e)
-		output = false
-	})
-	return output
+func (col *CollectionClass) FindOne(filter bSon.M) *mongo.SingleResult {
+	return col.collection.FindOne(context.TODO(), filter)
 }
 
 func (col *CollectionClass) Find(filter bSon.M, inSortOrder bSon.M, inPage int64, inLimit int64) (output []any) {
