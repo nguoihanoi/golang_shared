@@ -92,23 +92,6 @@ func (col *CollectionClass) GetListIndex(nameIndex any) (err error) {
 	return err
 }
 
-func structToBsonM(v any) (bSon.M, error) {
-	// Step 1: Marshal struct thành bytes BSON
-	data, err := bSon.Marshal(v)
-	if err != nil {
-		return nil, err
-	}
-
-	// Step 2: Unmarshal bytes BSON ngược lại vào bson.M
-	var doc bSon.M
-	err = bSon.Unmarshal(data, &doc)
-	if err != nil {
-		return nil, err
-	}
-
-	return doc, nil
-}
-
 func (col *CollectionClass) Create(insertData any) (output bool) {
 	output = false
 	libProcess.Try(func() {
@@ -193,30 +176,15 @@ func (col *CollectionClass) FindOne(filter bSon.M) *mongo.SingleResult {
 	return col.collection.FindOne(context.TODO(), filter)
 }
 
-func (col *CollectionClass) Find(filter bSon.M, inSortOrder bSon.M, inPage int64, inLimit int64) (output []any) {
-	var err error
-	var cursor *mongo.Cursor
-	status := true
-	libProcess.Try(func() {
-		opts := options.Find().SetSort(inSortOrder)
-		if inPage > 0 {
-			opts = opts.SetSkip((inPage - 1) * inLimit)
-		}
-		if inLimit > 0 {
-			opts = opts.SetLimit(inLimit)
-		}
-		cursor, err = col.collection.Find(context.TODO(), filter, opts)
-		if err == nil {
-			err = cursor.All(context.TODO(), &output)
-		}
-	}).Catch(func(e libProcess.E) {
-		log.Println(e)
-		status = false
-	})
-	if err != nil || status == false {
-		return nil
+func (col *CollectionClass) Find(filter bSon.M, inSortOrder bSon.M, inPage int64, inLimit int64) (*mongo.Cursor, error) {
+	opts := options.Find().SetSort(inSortOrder)
+	if inPage > 0 {
+		opts = opts.SetSkip((inPage - 1) * inLimit)
 	}
-	return output
+	if inLimit > 0 {
+		opts = opts.SetLimit(inLimit)
+	}
+	return col.collection.Find(context.TODO(), filter, opts)
 }
 
 func (col *CollectionClass) Count(filter bSon.M) (output int64) {
@@ -234,24 +202,11 @@ func (col *CollectionClass) Count(filter bSon.M) (output int64) {
 	return output
 }
 
-func (col *CollectionClass) Pipe(matchFilter bSon.D, groupFilter bSon.D, inSortOrder bSon.D) (output []any) {
-	var err error
-	var cursor *mongo.Cursor
-	status := true
-	libProcess.Try(func() {
-		matchStage := bSon.D{{Key: "$match", Value: matchFilter}}
-		groupStage := bson.D{{Key: "$group", Value: groupFilter}}
-		sortStage := bson.D{{Key: "$sort", Value: inSortOrder}}
-		cursor, err = col.collection.Aggregate(context.TODO(), mongo.Pipeline{matchStage, groupStage, sortStage})
-		if err == nil {
-			err = cursor.All(context.TODO(), &output)
-		}
-	}).Catch(func(e libProcess.E) {
-		log.Println(e)
-		status = false
-	})
-	if err != nil || status == false {
-		return nil
-	}
-	return output
+func (col *CollectionClass) Pipe(matchFilter bSon.D, groupFilter bSon.D, inSortOrder bSon.D) (*mongo.Cursor, error) {
+	matchStage := bSon.D{{Key: "$match", Value: matchFilter}}
+	groupStage := bson.D{{Key: "$group", Value: groupFilter}}
+	sortStage := bson.D{{Key: "$sort", Value: inSortOrder}}
+	return col.collection.Aggregate(context.TODO(), mongo.Pipeline{matchStage, groupStage, sortStage})
 }
+
+func (col *CollectionClass) Extract()
