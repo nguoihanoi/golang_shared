@@ -15,14 +15,14 @@ type User struct {
 	LanguageCode     string    `bson:"language_code" json:"language_code"`
 	FirstName        string    `bson:"first_name" json:"first_name"`
 	LastName         string    `bson:"last_name" json:"last_name"`
-	PasswordHash     string    `bson:"password_hash" json:"-"` // Never send this to client
-	Password         string    `bson:"password" json:"-"`      // Never send this to client
+	PasswordHash     string    `bson:"password_hash" json:"password_hash"` // Never send this to client
+	Password         string    `bson:"password" json:"password"`           // Never send this to client
 	ResetToken       string    `bson:"reset_token" json:"reset_token"`
 	ResetTokenExp    time.Time `bson:"reset_token_exp" json:"reset_token_exp"`
 	IsActive         bool      `bson:"is_active" json:"is_active"`
 	ProfilePicture   string    `bson:"profile_picture" json:"profile_picture"`
 	AuthProvider     string    `bson:"auth_provider" json:"auth_provider"`           // "google", "facebook", or empty for local auth
-	ProviderID       string    `bson:"provider_id" json:"-"`                         // ID from the social provider
+	ProviderID       string    `bson:"provider_id" json:"provider_id"`               // ID from the social provider
 	TwoFactorEnabled bool      `bson:"two_factor_enabled" json:"two_factor_enabled"` // Whether 2FA is enabled
 }
 
