@@ -18,12 +18,13 @@ func GetValidate() *mainValidator.Validate {
 	return validate
 }
 
-func Validate(ctx *fastHttp.RequestCtx, regRequest any) error {
+func Validate(ctx *fastHttp.RequestCtx) (regRequest any, err error) {
 	//Todo: get struct input
-	if err := json.Unmarshal(ctx.PostBody(), regRequest); err != nil {
-		return err
+	if err = json.Unmarshal(Request().PostBody(ctx), regRequest); err != nil {
+		return nil, err
 	}
 	//Todo: validate struct input
 	mainValidate := GetValidate()
-	return mainValidate.Struct(regRequest)
+	err = mainValidate.Struct(regRequest)
+	return regRequest, err
 }
