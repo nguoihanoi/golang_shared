@@ -7,7 +7,6 @@ import (
 	"time"
 
 	libProcess "github.com/nguoihanoi/golang_shared/libs/process"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/v2/bson"
 	bSon "go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
@@ -43,17 +42,6 @@ func NewDatabase(mongoClient *mongo.Client, dbName string) *DatabaseClass {
 
 type CollectionClass struct {
 	collection *mongo.Collection
-}
-
-type CollectionBase struct {
-	ID        string    `bson:"_id,omitempty" json:"_id,omitempty"`
-	Delete    bool      `bson:"delete" json:"delete"`
-	CreatedAt time.Time `bson:"created_at" json:"created_at"`
-	UpdatedAt time.Time `bson:"updated_at" json:"updated_at"`
-}
-type LapTrinhVien struct {
-	CollectionBase   // Anonymous field (Struct Embedding)
-	NgonNguChuyenMon string
 }
 
 func (db *DatabaseClass) NewCollection(inCollection string) *CollectionClass {
@@ -121,19 +109,14 @@ func structToBsonM(v any) (bSon.M, error) {
 	return doc, nil
 }
 
-func (col *CollectionClass) Create(insertData any) (output string) {
+func (col *CollectionClass) Create(insertData any) (output bool) {
+	output = false
 	libProcess.Try(func() {
-		createData, _ := structToBsonM(insertData)
-		id := primitive.NewObjectID().Hex()
-		createData["_id"] = id
-		curDate := time.Now()
-		createData["created_at"] = curDate
-		createData["updated_at"] = curDate
-		_, err := col.collection.InsertOne(context.TODO(), createData)
+		_, err := col.collection.InsertOne(context.TODO(), insertData)
 		if err != nil {
 			log.Println(err)
 		} else {
-			output = id
+			output = true
 		}
 	}).Catch(func(e libProcess.E) {
 		log.Println(e)
