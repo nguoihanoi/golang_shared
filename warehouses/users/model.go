@@ -73,8 +73,8 @@ func GetUserById(inId string, isCache bool) (output User) {
 			return output
 		}
 	}
-	result := userCollection.FindById(inId, &output)
-	if result == false {
+	err := userCollection.FindById(inId).Decode(&output)
+	if err != nil {
 		output.ID = ""
 	}
 	return output
@@ -85,10 +85,10 @@ func GetUserByEmail(inEmail string, inId string) (output User) {
 	if inId != "" {
 		filter["_id"] = bSon.M{"$ne": inId}
 	}
-	result := userCollection.FindOne(filter, &output)
-	log.Println(result)
+	err := userCollection.FindOne(filter).Decode(&output)
+	log.Println(err)
 	log.Println(output)
-	if result == false {
+	if err != nil {
 		output.ID = ""
 	}
 	return output
