@@ -47,7 +47,7 @@ func Login(userDetail User, inPassword string) (User, bool) {
 func CreateUser(insertData User) (output string) {
 	output = ""
 	insertData.ID = primitive.NewObjectID().Hex()
-	curDate := time.Now()
+	curDate := time.Now().Unix()
 	insertData.CreatedAt = curDate
 	insertData.UpdatedAt = curDate
 	result := userCollection.Create(insertData)
