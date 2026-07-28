@@ -7,7 +7,7 @@ import (
 // User represents a user in the system
 type User struct {
 	ID               string    `bson:"_id,omitempty" json:"_id,omitempty"`
-	Delete           bool      `bson:"delete" json:"delete"`
+	Delete           int       `bson:"delete" json:"delete"`
 	CreatedAt        time.Time `bson:"created_at" json:"created_at"`
 	UpdatedAt        time.Time `bson:"updated_at" json:"updated_at"`
 	AccountType      string    `bson:"account_type" json:"account_type"`

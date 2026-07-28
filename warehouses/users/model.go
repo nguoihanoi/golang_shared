@@ -8,6 +8,7 @@ import (
 	libCrypto "github.com/nguoihanoi/golang_shared/libs/crypto"
 	libDb "github.com/nguoihanoi/golang_shared/libs/database"
 	libUtilities "github.com/nguoihanoi/golang_shared/libs/utilities"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	bSon "go.mongodb.org/mongo-driver/v2/bson"
 )
 
@@ -44,7 +45,15 @@ func Login(userDetail User, inPassword string) (User, bool) {
 }
 
 func CreateUser(insertData User) (output string) {
-	output = userCollection.Create(insertData)
+	output = ""
+	insertData.ID = primitive.NewObjectID().Hex()
+	curDate := time.Now()
+	insertData.CreatedAt = curDate
+	insertData.UpdatedAt = curDate
+	result := userCollection.Create(insertData)
+	if result == true {
+		output = insertData.ID
+	}
 	return output
 }
 
