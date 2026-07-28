@@ -20,7 +20,7 @@ func GetValidate() *mainValidator.Validate {
 
 func Validate(ctx *fastHttp.RequestCtx) (regRequest any, err error) {
 	//Todo: get struct input
-	if err = json.Unmarshal(Request().PostBody(ctx), regRequest); err != nil {
+	if err = json.Unmarshal(ctx.PostBody(), regRequest); err != nil {
 		return nil, err
 	}
 	//Todo: validate struct input
