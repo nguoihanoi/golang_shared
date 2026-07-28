@@ -50,6 +50,8 @@ github.com/nguoihanoi/golang_shared/libs/database v0.0.0-20260727110939-bdcfab1f
 github.com/nguoihanoi/golang_shared/libs/database v0.0.0-20260727110939-bdcfab1f94a6/go.mod h1:/Z+4IWAbbyTcUDVIhfGHFUKh7t175k+LCzHFofqavik=
 github.com/nguoihanoi/golang_shared/libs/database v0.0.0-20260728150811-39624abb1645 h1:7MFjaQN7VsE+1NEXlpZnBo3vXbz24ytTuijnUWtWSGM=
 github.com/nguoihanoi/golang_shared/libs/database v0.0.0-20260728150811-39624abb1645/go.mod h1:/Z+4IWAbbyTcUDVIhfGHFUKh7t175k+LCzHFofqavik=
+github.com/nguoihanoi/golang_shared/libs/database v0.0.0-20260728152631-78d805234d84 h1:32QocPmEqZZYufBwZUeks7XeFnCWAnbJEKB3KYkU5vg=
+github.com/nguoihanoi/golang_shared/libs/database v0.0.0-20260728152631-78d805234d84/go.mod h1:/Z+4IWAbbyTcUDVIhfGHFUKh7t175k+LCzHFofqavik=
 github.com/nguoihanoi/golang_shared/libs/process v0.0.0-20260726071625-6d69221739d4 h1:uL9fRhNXwZlo9wIYFj/YVxQBK9IE8gHOT0BP8TCDN2Y=
 github.com/nguoihanoi/golang_shared/libs/process v0.0.0-20260726071625-6d69221739d4/go.mod h1:u8m/pOkVEnozantr7T/xc9lAfD2/AzzdZI9oPJBhqws=
 github.com/nguoihanoi/golang_shared/libs/process v0.0.0-20260727103103-eab92e6e930e h1:5VyWIBDf819eE77rVkxtPMnQouyScv5Oh8uAyz11q1A=
