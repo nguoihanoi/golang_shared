@@ -207,7 +207,7 @@ func (col *CollectionClass) FindById(inId string) (output any) {
 	status := true
 	libProcess.Try(func() {
 		filter := bSon.M{"_id": inId}
-		err = col.collection.FindOne(context.TODO(), filter).Decode(&output)
+		err = col.collection.FindOne(context.TODO(), filter).Decode(output)
 	}).Catch(func(e libProcess.E) {
 		log.Println(e)
 		status = false
@@ -221,7 +221,7 @@ func (col *CollectionClass) FindOne(filter bSon.M) (output any) {
 	var err error
 	status := true
 	libProcess.Try(func() {
-		err = col.collection.FindOne(context.TODO(), filter).Decode(&output)
+		err = col.collection.FindOne(context.TODO(), filter).Decode(output)
 	}).Catch(func(e libProcess.E) {
 		log.Println(e)
 		status = false
