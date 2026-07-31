@@ -63,7 +63,7 @@ type CorsClass struct {
 var libJwt *libCrypto.JwtClass
 
 func Init(inOrigin string, inMethod string, inToken string) *CorsClass {
-	libJwt = libCrypto.JWT([]byte(inToken))
+	libJwt = libCrypto.JWT(inToken)
 	return &CorsClass{
 		origin:  inOrigin,
 		methods: inMethod,
@@ -103,7 +103,7 @@ func (c *CorsClass) CorsMiddleware(next fastHttp.RequestHandler) fastHttp.Reques
 			ctx.SetStatusCode(fastHttp.StatusOK)
 			return
 		}
-		var token = extractBearerToken(ctx)
+		//var token = extractBearerToken(ctx)
 		var apiKey = extractHeader(ctx, "X-Api-Key")
 		if apiKey == "1" {
 			var bodyRequest bodyRequest
