@@ -4,6 +4,8 @@ import (
 	"log"
 	"time"
 
+	libCrypto "github.com/nguoihanoi/golang_shared/libs/crypto"
+	libUtilities "github.com/nguoihanoi/golang_shared/libs/utilities"
 	fastHttp "github.com/valyala/fasthttp"
 )
 
@@ -48,4 +50,89 @@ func Post(h fastHttp.RequestHandler) fastHttp.RequestHandler {
 		h = m(h)
 	}
 	return h
+}
+
+type bodyRequest struct {
+	Key string `json:"key" bson:"key"`
+}
+type CorsClass struct {
+	origin  string
+	methods string
+}
+
+var libJwt *libCrypto.JwtClass
+
+func Init(inOrigin string, inMethod string, inToken string) *CorsClass {
+	libJwt = libCrypto.JWT([]byte(inToken))
+	return &CorsClass{
+		origin:  inOrigin,
+		methods: inMethod,
+	}
+}
+
+func extractBearerToken(ctx *fastHttp.RequestCtx) string {
+	authHeader := ctx.Request.Header.Peek("Authorization")
+	if len(authHeader) == 0 {
+		return ""
+	}
+	authStr := string(authHeader)
+	const prefix = "Bearer "
+	if len(authStr) > len(prefix) && authStr[:len(prefix)] == prefix {
+		return authStr[len(prefix):]
+	}
+	return ""
+}
+func extractHeader(ctx *fastHttp.RequestCtx, inKey string) string {
+	keyHeader := ctx.Request.Header.Peek(inKey)
+	if len(keyHeader) == 0 {
+		return ""
+	}
+	return string(keyHeader)
+}
+
+func (c *CorsClass) CorsMiddleware(next fastHttp.RequestHandler) fastHttp.RequestHandler {
+	output := func(ctx *fastHttp.RequestCtx) {
+		// Set CORS headers
+		start := time.Now()
+		ctx.Response.Header.Set("Access-Control-Allow-Origin", c.origin)
+		ctx.Response.Header.Set("Access-Control-Expose-Headers", "Authorization")
+		ctx.Response.Header.Set("Access-Control-Allow-Methods", c.methods)
+		ctx.Response.Header.Set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Accept, Content-Type, Content-Length, Accept-Encoding, Authorization, X-CSRF-Token, Cache-Control")
+		// Handle preflight (OPTIONS) requests
+		if string(ctx.Method()) == "OPTIONS" {
+			ctx.SetStatusCode(fastHttp.StatusOK)
+			return
+		}
+		var token = extractBearerToken(ctx)
+		var apiKey = extractHeader(ctx, "X-Api-Key")
+		if apiKey == "1" {
+			var bodyRequest bodyRequest
+			err := libUtilities.Validate(ctx, &bodyRequest)
+			if err == nil {
+				bodyValue, err2 := libJwt.VerifyToken(bodyRequest.Key)
+				if err2 == nil {
+					temBodyValue, status := bodyValue.(string)
+					if status == true {
+						ctx.Request.SetBodyString(temBodyValue)
+					} else {
+						ctx.SetStatusCode(fastHttp.StatusForbidden)
+						return
+					}
+				} else {
+					ctx.SetStatusCode(fastHttp.StatusForbidden)
+					return
+				}
+			} else {
+				ctx.SetStatusCode(fastHttp.StatusForbidden)
+				return
+			}
+		}
+		// Do middleware things
+		defer func() {
+			log.Println(string(ctx.Path()), time.Since(start))
+		}()
+		// Call the next handler
+		next(ctx)
+	}
+	return fastHttp.CompressHandler(output)
 }
