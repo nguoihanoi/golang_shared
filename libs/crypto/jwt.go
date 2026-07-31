@@ -6,15 +6,15 @@ import (
 	jwt "github.com/golang-jwt/jwt/v5"
 )
 
-type jwtClass struct {
+type JwtClass struct {
 	secretKey string
 }
 
-func JWT(inJwtToken string) *jwtClass {
-	return &jwtClass{secretKey: inJwtToken}
+func JWT(inJwtToken string) *JwtClass {
+	return &JwtClass{secretKey: inJwtToken}
 }
 
-func (j *jwtClass) CreateToken(inData any) (string, time.Time, error) {
+func (j *JwtClass) CreateToken(inData any) (string, time.Time, error) {
 	nextTime := time.Now().Add(time.Hour * 24)
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
@@ -30,7 +30,7 @@ func (j *jwtClass) CreateToken(inData any) (string, time.Time, error) {
 	return tokenString, nextTime, nil
 }
 
-func (j *jwtClass) VerifyToken(tokenString string) (any, error) {
+func (j *JwtClass) VerifyToken(tokenString string) (any, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (any, error) {
 		return j.secretKey, nil
 	})
