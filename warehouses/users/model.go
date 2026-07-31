@@ -27,7 +27,6 @@ func InitModel(inDb *libDb.DatabaseClass, inRedisClient *libCache.Cache, inJwtTo
 func Login(userDetail User, inPassword string, inEncrypted bool) (User, bool) {
 	resultStatus := false
 	newPassword, _ := libUtilities.String().GetHashPassWord(inPassword, userDetail.PasswordHash, inEncrypted)
-	log.Println(newPassword, userDetail.Password)
 	if newPassword == userDetail.Password {
 		newToken, nextTime, err := libJwt.CreateToken(UserToken{
 			UserID:       userDetail.ID,
