@@ -37,7 +37,8 @@ func (j *JwtClass) VerifyToken(tokenString string) (any, error) {
 
 	if err != nil {
 		return nil, err
-	} else if claims, ok := token.Claims.(jwt.MapClaims); ok {
+	}
+	if claims, ok := token.Claims.(jwt.MapClaims); ok {
 		return claims["data"], nil
 	}
 	return nil, nil

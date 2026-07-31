@@ -1,7 +1,6 @@
 package users
 
 import (
-	"log"
 	"time"
 
 	libCache "github.com/nguoihanoi/golang_shared/libs/cache"
@@ -88,8 +87,6 @@ func GetUserByEmail(inEmail string, inId string) (output User) {
 		filter["_id"] = bSon.M{"$ne": inId}
 	}
 	err := userCollection.FindOne(filter).Decode(&output)
-	log.Println(err)
-	log.Println(output)
 	if err != nil {
 		output.ID = ""
 	}
