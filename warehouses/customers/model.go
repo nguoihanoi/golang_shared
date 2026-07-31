@@ -82,7 +82,7 @@ func GetGroupById(inId string, isCache bool) (output CustomerGroup) {
 }
 
 func GetGroups() (results []CustomerGroup) {
-	cursor, err := groupCollection.Find(bSon.M{"delete": 0, "status": 1}, bSon.M{"delete": 1, "status": -1, "order": 1}, 0, 0)
+	cursor, err := groupCollection.Find(bSon.M{"delete": 0, "status": 1}, bSon.D{{Key: "delete", Value: 1}, {Key: "status", Value: -1}, {Key: "order", Value: 1}}, 0, 0)
 	if err != nil {
 		if err = cursor.All(context.TODO(), &results); err != nil {
 			panic(err)
@@ -91,7 +91,7 @@ func GetGroups() (results []CustomerGroup) {
 	return results
 }
 
-func SearchGroups(filter bSon.M, inSortOrder bSon.M, inPage int64, inLimit int64) (results []CustomerGroup, total int64) {
+func SearchGroups(filter bSon.M, inSortOrder bSon.D, inPage int64, inLimit int64) (results []CustomerGroup, total int64) {
 	var wg sync.WaitGroup
 	wg.Add(2) // 2 tác vụ song song
 
