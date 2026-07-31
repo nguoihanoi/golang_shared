@@ -208,5 +208,3 @@ func (col *CollectionClass) Pipe(matchFilter bSon.D, groupFilter bSon.D, inSortO
 	sortStage := bson.D{{Key: "$sort", Value: inSortOrder}}
 	return col.collection.Aggregate(context.TODO(), mongo.Pipeline{matchStage, groupStage, sortStage})
 }
-
-func (col *CollectionClass) Extract()
