@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"log"
+	"slices"
 	"time"
 
 	libProcess "github.com/nguoihanoi/golang_shared/libs/process"
@@ -207,4 +208,53 @@ func (col *CollectionClass) Pipe(matchFilter bSon.D, groupFilter bSon.D, inSortO
 	groupStage := bson.D{{Key: "$group", Value: groupFilter}}
 	sortStage := bson.D{{Key: "$sort", Value: inSortOrder}}
 	return col.collection.Aggregate(context.TODO(), mongo.Pipeline{matchStage, groupStage, sortStage})
+}
+
+type CreateIndex struct {
+	Name   string `bson:"name" json:"name"`
+	Key    bSon.D `bson:"key" json:"key"`
+	Unique bool   `bson:"unique" json:"unique"`
+}
+type NameIndex struct {
+	Name string `bson:"name" json:"name"`
+}
+
+func (col *CollectionClass) UpdateIndex(listIndexArr []CreateIndex) {
+	listNameIndex := []string{"_id_"}
+	for i := 0; i < len(listIndexArr); i += 1 {
+		listNameIndex = append(listNameIndex, listIndexArr[i].Name)
+	}
+	//Todo: validate index cũ
+	oldNameIndex := []string{}
+	libProcess.Try(func() {
+		nameIndex := []NameIndex{}
+		err := col.GetListIndex(&nameIndex)
+		if err == nil {
+			for i := 0; i < len(nameIndex); i += 1 {
+				if slices.Contains(listNameIndex, nameIndex[i].Name) {
+					oldNameIndex = append(oldNameIndex, nameIndex[i].Name)
+				} else {
+					col.DeleteIndex(nameIndex[i].Name)
+				}
+			}
+		}
+	}).Catch(func(e libProcess.E) {
+		log.Println(e)
+	})
+	//Todo: tạo index mới
+	libProcess.Try(func() {
+		for i := 0; i < len(listIndexArr); i += 1 {
+			if !slices.Contains(oldNameIndex, listIndexArr[i].Name) {
+				indexModel := mongo.IndexModel{
+					Keys: listIndexArr[i].Key,
+				}
+				if listIndexArr[i].Unique {
+					indexModel.Options = options.Index().SetUnique(true)
+				}
+				col.CreateIndex(indexModel)
+			}
+		}
+	}).Catch(func(e libProcess.E) {
+		log.Println(e)
+	})
 }
