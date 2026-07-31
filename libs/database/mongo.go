@@ -177,7 +177,7 @@ func (col *CollectionClass) FindOne(filter bSon.M) *mongo.SingleResult {
 	return col.collection.FindOne(context.TODO(), filter)
 }
 
-func (col *CollectionClass) Find(filter bSon.M, inSortOrder bSon.M, inPage int64, inLimit int64) (*mongo.Cursor, error) {
+func (col *CollectionClass) Find(filter bSon.M, inSortOrder bSon.D, inPage int64, inLimit int64) (*mongo.Cursor, error) {
 	opts := options.Find().SetSort(inSortOrder)
 	if inPage > 0 {
 		opts = opts.SetSkip((inPage - 1) * inLimit)
