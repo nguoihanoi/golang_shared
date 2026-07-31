@@ -7,11 +7,11 @@ import (
 )
 
 type JwtClass struct {
-	secretKey string
+	secretKey []byte
 }
 
 func JWT(inJwtToken string) *JwtClass {
-	return &JwtClass{secretKey: inJwtToken}
+	return &JwtClass{secretKey: []byte(inJwtToken)}
 }
 
 func (j *JwtClass) CreateToken(inData any) (string, time.Time, error) {
