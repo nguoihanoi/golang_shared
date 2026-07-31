@@ -21,8 +21,8 @@ require (
 	github.com/nguoihanoi/goCrypto v1.0.0 // indirect
 	github.com/nguoihanoi/golang_shared v1.0.0 // indirect
 	github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20260728045141-222a099ee4af // indirect
-	github.com/nguoihanoi/golang_shared/libs/crypto v0.0.0-20260727103103-eab92e6e930e // indirect
-	github.com/nguoihanoi/golang_shared/libs/database v0.0.0-20260728163112-c53977f9bf4d // indirect
+	github.com/nguoihanoi/golang_shared/libs/crypto v0.0.0-20260731082717-ed2abd985d7d // indirect
+	github.com/nguoihanoi/golang_shared/libs/database v0.0.0-20260728164733-71640ac47037 // indirect
 	github.com/nguoihanoi/golang_shared/libs/process v0.0.0-20260727103103-eab92e6e930e // indirect
 	github.com/nguoihanoi/golang_shared/libs/utilities v0.0.0-20260727104710-1fe9f1bb65e7 // indirect
 	github.com/redis/go-redis/v9 v9.21.0 // indirect

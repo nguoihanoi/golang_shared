@@ -15,18 +15,20 @@ import (
 var dbMongo *libDb.DatabaseClass
 var userCollection *libDb.CollectionClass
 var userCache *libCache.Cache
+var libJwt *libCrypto.JwtClass
 
-func InitModel(inDb *libDb.DatabaseClass, inRedisClient *libCache.Cache) {
+func InitModel(inDb *libDb.DatabaseClass, inRedisClient *libCache.Cache, inJwtToken string) {
 	dbMongo = inDb
 	userCache = inRedisClient
 	userCollection = dbMongo.NewCollection("users")
+	libJwt = libCrypto.JWT(inJwtToken)
 }
 
 func Login(userDetail User, inPassword string) (User, bool) {
 	resultStatus := false
 	newPassword, _ := libUtilities.String().GetHashPassWord(inPassword, userDetail.PasswordHash, true)
 	if newPassword == userDetail.Password {
-		newToken, nextTime, err := libCrypto.JWT().CreateToken(UserToken{
+		newToken, nextTime, err := libJwt.CreateToken(UserToken{
 			UserID:       userDetail.ID,
 			LanguageCode: userDetail.LanguageCode,
 			Time:         time.Now().Unix(),
@@ -47,7 +49,7 @@ func Login(userDetail User, inPassword string) (User, bool) {
 func CreateUser(insertData User) (output string) {
 	output = ""
 	insertData.ID = primitive.NewObjectID().Hex()
-	curDate := time.Now().Unix()
+	curDate := time.Now()
 	insertData.CreatedAt = curDate
 	insertData.UpdatedAt = curDate
 	result := userCollection.Create(insertData)
