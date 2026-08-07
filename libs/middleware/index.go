@@ -125,13 +125,8 @@ func (c *CorsClass) CorsMiddleware(next fastHttp.RequestHandler) fastHttp.Reques
 						err := json.Unmarshal([]byte(temAuthValue), &authReq)
 						if err == nil {
 							log.Println(authReq.CustomerId, authReq.UserId)
-							if status == true {
-								ctx.Response.Header.Set("X-Customer-Id", authReq.CustomerId)
-								ctx.Response.Header.Set("X-User-Id", authReq.UserId)
-							} else {
-								ctx.SetStatusCode(fastHttp.StatusForbidden)
-								return
-							}
+							ctx.Response.Header.Set("X-Customer-Id", authReq.CustomerId)
+							ctx.Response.Header.Set("X-User-Id", authReq.UserId)
 						} else {
 							ctx.SetStatusCode(fastHttp.StatusForbidden)
 							return
