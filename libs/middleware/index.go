@@ -115,7 +115,8 @@ func (c *CorsClass) CorsMiddleware(next fastHttp.RequestHandler) fastHttp.Reques
 			err := libUtilities.Validate(ctx, &bodyRequest)
 			if err == nil {
 				//Todo: verify auth
-				authValue, err3 := libJwt.VerifyToken(bodyRequest.Key)
+				authValue, err3 := libJwt.VerifyToken(bodyRequest.Value)
+				log.Println(err3)
 				if err3 == nil {
 					log.Println(authValue)
 					temBodyValue, status := authValue.(authRequest)
