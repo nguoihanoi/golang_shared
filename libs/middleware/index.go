@@ -2,11 +2,10 @@ package middleware
 
 import (
 	"encoding/json"
-	"errors"
 	"log"
+	"sync"
 	"time"
 
-	"github.com/minio/pkg/v3/sync/errgroup"
 	libCrypto "github.com/nguoihanoi/golang_shared/libs/crypto"
 	libUtilities "github.com/nguoihanoi/golang_shared/libs/utilities"
 	fastHttp "github.com/valyala/fasthttp"
@@ -148,41 +147,39 @@ func (c *CorsClass) CorsMiddleware(next fastHttp.RequestHandler) fastHttp.Reques
 			err := libUtilities.Validate(ctx, &bodyRequest)
 			if err == nil {
 				var (
-					authReq      *authRequest // Giả định kiểu dữ liệu trả về của processAuthReq
+					authReq      *authRequest
 					temBodyValue string
 				)
-
-				// Khởi tạo errgroup để quản lý các Goroutine
-				var g errgroup.Group
-
+				statusOk := true
+				var wg sync.WaitGroup
+				wg.Add(2)
 				// 1. Luồng 1: Xử lý Xác thực (Auth)
-				g.Go(func() error {
+				go func() {
+					defer wg.Done()
 					res, ok := processAuthReq(ctx, bodyRequest)
 					if !ok {
-						return errors.New("auth failed")
+						statusOk = false
 					}
 					authReq = &res
-					return nil
-				})
-
+				}()
 				// 2. Luồng 2: Xử lý Verify Body
-				g.Go(func() error {
+				go func() {
+					defer wg.Done()
 					bodyVal, ok := processBodyReq(ctx, bodyRequest)
 					if !ok {
-						return errors.New("body verification failed")
+						statusOk = false
 					}
 					temBodyValue = bodyVal
-					return nil
-				})
-
-				// 3. Chờ cả 2 luồng hoàn thành
-				if err := g.Wait(); err != nil {
+				}()
+				wg.Wait()
+				if statusOk == false {
 					// Nếu 1 trong 2 luồng thất bại -> Trả về 403 Forbidden
 					ctx.SetStatusCode(fastHttp.StatusForbidden)
 					return
 				}
 
 				// 4. Ghi thông tin vào ctx trên Goroutine CHÍNH (Thread-safe)
+				log.Println(authReq, temBodyValue)
 				ctx.Response.Header.Set("X-Customer-Id", authReq.CustomerId)
 				ctx.Response.Header.Set("X-User-Id", authReq.UserId)
 				ctx.Request.SetBodyString(temBodyValue)
