@@ -53,6 +53,13 @@ func (cache *Cache) Del(inKey string) {
 	cache.Db.Del(cache.Ctx, cache.Prefix+inKey).Result()
 }
 
+func (cache *Cache) Dels(inKeys ...string) {
+	for i := 0; i < len(inKeys); i += 1 {
+		inKeys[i] = cache.Prefix + inKeys[i]
+	}
+	cache.Db.Del(cache.Ctx, inKeys...).Result()
+}
+
 func (cache *Cache) HSet(inKey string, inProperty, inValue any) {
 	jsonString, _ := json.Marshal(inValue)
 	err := cache.Db.HSet(cache.Ctx, cache.Prefix+inKey, inProperty, jsonString).Err()
