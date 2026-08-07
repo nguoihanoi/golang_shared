@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"encoding/json"
 	"log"
 	"time"
 
@@ -118,11 +119,23 @@ func (c *CorsClass) CorsMiddleware(next fastHttp.RequestHandler) fastHttp.Reques
 				authValue, err3 := libJwt.VerifyToken(bodyRequest.Value)
 				if err3 == nil {
 					log.Println(authValue)
-					temBodyValue, status := authValue.(authRequest)
-					log.Println(temBodyValue.CustomerId, temBodyValue.UserId)
+					temAuthValue, status := authValue.(string)
 					if status == true {
-						ctx.Response.Header.Set("X-Customer-Id", temBodyValue.CustomerId)
-						ctx.Response.Header.Set("X-User-Id", temBodyValue.UserId)
+						authReq := authRequest{}
+						err := json.Unmarshal([]byte(temAuthValue), &authReq)
+						if err == nil {
+							log.Println(authReq.CustomerId, authReq.UserId)
+							if status == true {
+								ctx.Response.Header.Set("X-Customer-Id", authReq.CustomerId)
+								ctx.Response.Header.Set("X-User-Id", authReq.UserId)
+							} else {
+								ctx.SetStatusCode(fastHttp.StatusForbidden)
+								return
+							}
+						} else {
+							ctx.SetStatusCode(fastHttp.StatusForbidden)
+							return
+						}
 					} else {
 						ctx.SetStatusCode(fastHttp.StatusForbidden)
 						return
