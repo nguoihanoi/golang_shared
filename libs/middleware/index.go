@@ -117,9 +117,10 @@ func (c *CorsClass) CorsMiddleware(next fastHttp.RequestHandler) fastHttp.Reques
 				//Todo: verify auth
 				authValue, err3 := libJwt.VerifyToken(bodyRequest.Key)
 				if err3 == nil {
+					log.Println(authValue)
 					temBodyValue, status := authValue.(authRequest)
+					log.Println(temBodyValue)
 					if status == true {
-						log.Println(temBodyValue)
 						ctx.Response.Header.Set("X-Customer-Id", temBodyValue.CustomerId)
 						ctx.Response.Header.Set("X-User-Id", temBodyValue.UserId)
 					} else {

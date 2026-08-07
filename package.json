@@ -1,0 +1,14 @@
+{
+    "name": "tool-lib-service",
+    "version": "1.0.0",
+    "description": "nodemon --ext go --exec go run *.go --signal SIGTERM",
+    "main": "index.js",
+    "scripts": {
+        "dev": "nodemon --no-stdin --exec \"git push -u origin main\""
+    },
+    "directories": {
+        "lib": "lib"
+    },
+    "author": "",
+    "license": "ISC"
+}
