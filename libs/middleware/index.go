@@ -2,9 +2,11 @@ package middleware
 
 import (
 	"encoding/json"
+	"errors"
 	"log"
 	"time"
 
+	"github.com/minio/pkg/v3/sync/errgroup"
 	libCrypto "github.com/nguoihanoi/golang_shared/libs/crypto"
 	libUtilities "github.com/nguoihanoi/golang_shared/libs/utilities"
 	fastHttp "github.com/valyala/fasthttp"
@@ -96,6 +98,36 @@ func extractHeader(ctx *fastHttp.RequestCtx, inKey string) string {
 	return string(keyHeader)
 }
 
+func processAuthReq(ctx *fastHttp.RequestCtx, bodyRequest bodyRequest) (authRequest, bool) {
+	authReq := authRequest{}
+	authValue, err3 := libJwt.VerifyToken(bodyRequest.Value)
+	statusOk := false
+	if err3 == nil {
+		temAuthValue, status := authValue.(string)
+		if status == true {
+			err4 := json.Unmarshal([]byte(temAuthValue), &authReq)
+			if err4 == nil {
+				ctx.Response.Header.Set("X-Customer-Id", authReq.CustomerId)
+				ctx.Response.Header.Set("X-User-Id", authReq.UserId)
+				statusOk = true
+			}
+		}
+	}
+	return authReq, statusOk
+}
+
+func processBodyReq(ctx *fastHttp.RequestCtx, bodyRequest bodyRequest) (string, bool) {
+	bodyValue, err2 := libJwt.VerifyToken(bodyRequest.Key)
+	if err2 == nil {
+		temBodyValue, status := bodyValue.(string)
+		if status == true {
+			ctx.Request.SetBodyString(temBodyValue)
+		}
+		return temBodyValue, status
+	}
+	return "", false
+}
+
 func (c *CorsClass) CorsMiddleware(next fastHttp.RequestHandler) fastHttp.RequestHandler {
 	output := func(ctx *fastHttp.RequestCtx) {
 		// Set CORS headers
@@ -115,45 +147,45 @@ func (c *CorsClass) CorsMiddleware(next fastHttp.RequestHandler) fastHttp.Reques
 			var bodyRequest bodyRequest
 			err := libUtilities.Validate(ctx, &bodyRequest)
 			if err == nil {
-				//Todo: verify auth
-				authValue, err3 := libJwt.VerifyToken(bodyRequest.Value)
-				if err3 == nil {
-					log.Println(authValue)
-					temAuthValue, status := authValue.(string)
-					if status == true {
-						authReq := authRequest{}
-						err4 := json.Unmarshal([]byte(temAuthValue), &authReq)
-						if err4 == nil {
-							log.Println(authReq.CustomerId, authReq.UserId)
-							ctx.Response.Header.Set("X-Customer-Id", authReq.CustomerId)
-							ctx.Response.Header.Set("X-User-Id", authReq.UserId)
-						} else {
-							ctx.SetStatusCode(fastHttp.StatusForbidden)
-							return
-						}
-					} else {
-						ctx.SetStatusCode(fastHttp.StatusForbidden)
-						return
+				var (
+					authReq      *authRequest // Giả định kiểu dữ liệu trả về của processAuthReq
+					temBodyValue string
+				)
+
+				// Khởi tạo errgroup để quản lý các Goroutine
+				var g errgroup.Group
+
+				// 1. Luồng 1: Xử lý Xác thực (Auth)
+				g.Go(func() error {
+					res, ok := processAuthReq(ctx, bodyRequest)
+					if !ok {
+						return errors.New("auth failed")
 					}
-				} else {
+					authReq = &res
+					return nil
+				})
+
+				// 2. Luồng 2: Xử lý Verify Body
+				g.Go(func() error {
+					bodyVal, ok := processBodyReq(ctx, bodyRequest)
+					if !ok {
+						return errors.New("body verification failed")
+					}
+					temBodyValue = bodyVal
+					return nil
+				})
+
+				// 3. Chờ cả 2 luồng hoàn thành
+				if err := g.Wait(); err != nil {
+					// Nếu 1 trong 2 luồng thất bại -> Trả về 403 Forbidden
 					ctx.SetStatusCode(fastHttp.StatusForbidden)
 					return
 				}
-				//Todo: verify body
-				bodyValue, err2 := libJwt.VerifyToken(bodyRequest.Key)
-				if err2 == nil {
-					temBodyValue, status := bodyValue.(string)
-					log.Println(temBodyValue)
-					if status == true {
-						ctx.Request.SetBodyString(temBodyValue)
-					} else {
-						ctx.SetStatusCode(fastHttp.StatusForbidden)
-						return
-					}
-				} else {
-					ctx.SetStatusCode(fastHttp.StatusForbidden)
-					return
-				}
+
+				// 4. Ghi thông tin vào ctx trên Goroutine CHÍNH (Thread-safe)
+				ctx.Response.Header.Set("X-Customer-Id", authReq.CustomerId)
+				ctx.Response.Header.Set("X-User-Id", authReq.UserId)
+				ctx.Request.SetBodyString(temBodyValue)
 			} else {
 				ctx.SetStatusCode(fastHttp.StatusForbidden)
 				return

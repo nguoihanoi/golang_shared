@@ -12,6 +12,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.3.1 // indirect
 	github.com/klauspost/compress v1.19.1 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
+	github.com/minio/pkg/v3 v3.11.0 // indirect
 	github.com/nguoihanoi/golang_shared/libs/crypto v0.0.0-20260731095415-8ae46e09c8cf // indirect
 	github.com/nguoihanoi/golang_shared/libs/process v0.0.0-20260727103103-eab92e6e930e // indirect
 	github.com/nguoihanoi/golang_shared/libs/utilities v0.0.0-20260731095415-8ae46e09c8cf // indirect
