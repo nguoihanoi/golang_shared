@@ -79,6 +79,8 @@ func GetUserById(inId string, isCache bool) (output User) {
 	err := userCollection.FindById(inId).Decode(&output)
 	if err != nil {
 		output.ID = ""
+	} else {
+		userCache.Set("user:"+inId, output, 0)
 	}
 	return output
 }

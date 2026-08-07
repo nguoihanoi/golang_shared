@@ -91,6 +91,8 @@ func GetGroupById(inId string, isCache bool) (output CustomerGroup) {
 	err := groupCollection.FindById(inId).Decode(&output)
 	if err != nil {
 		output.ID = ""
+	} else {
+		customerCache.Set("customer_group:"+inId, output, 0)
 	}
 	return output
 }
@@ -193,6 +195,8 @@ func GetCustomerById(inId string, isCache bool) (output Customer) {
 	err := customerCollection.FindById(inId).Decode(&output)
 	if err != nil {
 		output.ID = ""
+	} else {
+		customerCache.Set("customer:"+inId, output, 0)
 	}
 	return output
 }
