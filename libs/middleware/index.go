@@ -179,7 +179,6 @@ func (c *CorsClass) CorsMiddleware(next fastHttp.RequestHandler) fastHttp.Reques
 				}
 
 				// 4. Ghi thông tin vào ctx trên Goroutine CHÍNH (Thread-safe)
-				log.Println(authReq, temBodyValue)
 				ctx.Response.Header.Set("X-Customer-Id", authReq.CustomerId)
 				ctx.Response.Header.Set("X-User-Id", authReq.UserId)
 				ctx.Request.SetBodyString(temBodyValue)
