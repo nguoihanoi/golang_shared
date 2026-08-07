@@ -23,6 +23,20 @@ func InitModel(inDb *libDb.DatabaseClass, inRedisClient *libCache.Cache, inJwtTo
 	dbMongo = inDb
 	customerCache = inRedisClient
 	customerCollection = dbMongo.NewCollection("customers")
+	customerCollection.UpdateIndex([]libDb.CreateIndex{
+		{
+			Name: "delete_1",
+			Key:  bSon.D{{Key: "delete", Value: 1}},
+		},
+		{
+			Name: "delete_1_first_name_1_last_name_1",
+			Key:  bSon.D{{Key: "delete", Value: 1}, {Key: "first_name", Value: 1}, {Key: "last_name", Value: 1}},
+		},
+		{
+			Name: "delete_1_customer_group_id_1_first_name_1_last_name_1",
+			Key:  bSon.D{{Key: "delete", Value: 1}, {Key: "customer_group_id", Value: 1}, {Key: "first_name", Value: 1}, {Key: "last_name", Value: 1}},
+		},
+	})
 	groupCollection = dbMongo.NewCollection("customer_groups")
 	groupCollection.UpdateIndex([]libDb.CreateIndex{
 		{

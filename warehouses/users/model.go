@@ -1,6 +1,8 @@
 package users
 
 import (
+	"context"
+	"sync"
 	"time"
 
 	libCache "github.com/nguoihanoi/golang_shared/libs/cache"
@@ -91,4 +93,38 @@ func GetUserByEmail(inEmail string, inId string) (output User) {
 		output.ID = ""
 	}
 	return output
+}
+
+func Search(filter bSon.M, inSortOrder bSon.D, inPage int64, inLimit int64) (results []User, total int64) {
+	var wg sync.WaitGroup
+	wg.Add(2) // 2 tác vụ song song
+
+	var findErr error
+	// Tác vụ 1: Lấy danh sách kết quả
+	go func() {
+		defer wg.Done()
+		cursor, err := userCollection.Find(filter, inSortOrder, inPage, inLimit)
+		if err != nil {
+			findErr = err
+			return
+		}
+		if err := cursor.All(context.TODO(), &results); err != nil {
+			findErr = err
+			return
+		}
+	}()
+
+	// Tác vụ 2: Đếm tổng số lượng bản ghi
+	go func() {
+		defer wg.Done()
+		total = userCollection.Count(filter)
+	}()
+
+	// Chờ cả 2 goroutine hoàn thành
+	wg.Wait()
+	if findErr != nil {
+		results = []User{}
+		total = 0
+	}
+	return results, total
 }

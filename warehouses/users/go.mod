@@ -22,7 +22,7 @@ require (
 	github.com/nguoihanoi/golang_shared v1.0.0 // indirect
 	github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20260728045141-222a099ee4af // indirect
 	github.com/nguoihanoi/golang_shared/libs/crypto v0.0.0-20260731084734-f56a879327a9 // indirect
-	github.com/nguoihanoi/golang_shared/libs/database v0.0.0-20260731083315-9c5647fc9054 // indirect
+	github.com/nguoihanoi/golang_shared/libs/database v0.0.0-20260807040627-fc2f9a418e47 // indirect
 	github.com/nguoihanoi/golang_shared/libs/process v0.0.0-20260727103103-eab92e6e930e // indirect
 	github.com/nguoihanoi/golang_shared/libs/utilities v0.0.0-20260727104710-1fe9f1bb65e7 // indirect
 	github.com/redis/go-redis/v9 v9.21.0 // indirect

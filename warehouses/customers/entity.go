@@ -10,7 +10,7 @@ type Customer struct {
 	Delete           int       `bson:"delete" json:"delete"`
 	CreatedAt        time.Time `bson:"created_at" json:"created_at"`
 	UpdatedAt        time.Time `bson:"updated_at" json:"updated_at"`
-	CustomerGroup    string    `bson:"customer_group" json:"customer_group"`
+	CustomerGroup    string    `bson:"customer_group_id" json:"customer_group_id"`
 	Email            string    `bson:"email" json:"email"`
 	LanguageCode     string    `bson:"language_code" json:"language_code"`
 	FirstName        string    `bson:"first_name" json:"first_name"`
