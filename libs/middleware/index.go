@@ -122,8 +122,8 @@ func (c *CorsClass) CorsMiddleware(next fastHttp.RequestHandler) fastHttp.Reques
 					temAuthValue, status := authValue.(string)
 					if status == true {
 						authReq := authRequest{}
-						err := json.Unmarshal([]byte(temAuthValue), &authReq)
-						if err == nil {
+						err4 := json.Unmarshal([]byte(temAuthValue), &authReq)
+						if err4 == nil {
 							log.Println(authReq.CustomerId, authReq.UserId)
 							ctx.Response.Header.Set("X-Customer-Id", authReq.CustomerId)
 							ctx.Response.Header.Set("X-User-Id", authReq.UserId)
@@ -143,6 +143,7 @@ func (c *CorsClass) CorsMiddleware(next fastHttp.RequestHandler) fastHttp.Reques
 				bodyValue, err2 := libJwt.VerifyToken(bodyRequest.Key)
 				if err2 == nil {
 					temBodyValue, status := bodyValue.(string)
+					log.Println(temBodyValue)
 					if status == true {
 						ctx.Request.SetBodyString(temBodyValue)
 					} else {
@@ -158,6 +159,7 @@ func (c *CorsClass) CorsMiddleware(next fastHttp.RequestHandler) fastHttp.Reques
 				return
 			}
 		}
+		log.Println("done")
 		// Do middleware things
 		defer func() {
 			log.Println(string(ctx.Path()), time.Since(start))
