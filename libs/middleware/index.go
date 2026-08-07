@@ -52,8 +52,13 @@ func Post(h fastHttp.RequestHandler) fastHttp.RequestHandler {
 	return h
 }
 
+type authRequest struct {
+	CustomerId string `json:"customer_id" bson:"customer_id"`
+	UserId     string `json:"user_id" bson:"user_id"`
+}
 type bodyRequest struct {
-	Key string `json:"key" bson:"key"`
+	Key   string `json:"key" bson:"key"`
+	Value string `json:"value" bson:"value"`
 }
 type CorsClass struct {
 	origin  string
@@ -109,6 +114,23 @@ func (c *CorsClass) CorsMiddleware(next fastHttp.RequestHandler) fastHttp.Reques
 			var bodyRequest bodyRequest
 			err := libUtilities.Validate(ctx, &bodyRequest)
 			if err == nil {
+				//Todo: verify auth
+				authValue, err3 := libJwt.VerifyToken(bodyRequest.Key)
+				if err3 == nil {
+					temBodyValue, status := authValue.(authRequest)
+					if status == true {
+						log.Println(temBodyValue)
+						ctx.Response.Header.Set("X-Customer-Id", temBodyValue.CustomerId)
+						ctx.Response.Header.Set("X-User-Id", temBodyValue.UserId)
+					} else {
+						ctx.SetStatusCode(fastHttp.StatusForbidden)
+						return
+					}
+				} else {
+					ctx.SetStatusCode(fastHttp.StatusForbidden)
+					return
+				}
+				//Todo: verify body
 				bodyValue, err2 := libJwt.VerifyToken(bodyRequest.Key)
 				if err2 == nil {
 					temBodyValue, status := bodyValue.(string)
