@@ -47,7 +47,7 @@ func Create(insertData Language) (output string) {
 func Update(inId string, inUpdateData bSon.M) bool {
 	output := languageCollection.UpdateId(inId, inUpdateData)
 	if output == true {
-		languageCache.Del("customer_language:" + inId)
+		languageCache.Del("language:" + inId)
 	}
 	return output
 }
@@ -55,14 +55,14 @@ func Update(inId string, inUpdateData bSon.M) bool {
 func Delete(inId string) bool {
 	output := languageCollection.DeleteId(inId)
 	if output == true {
-		languageCache.Del("customer_language:" + inId)
+		languageCache.Del("language:" + inId)
 	}
 	return output
 }
 
 func GetById(inId string, isCache bool) (output Language) {
 	if isCache == true {
-		cacheData := languageCache.Get("customer_language:" + inId)
+		cacheData := languageCache.Get("language:" + inId)
 		if cacheData != nil {
 			output, _ = cacheData.(Language)
 			return output
@@ -72,7 +72,7 @@ func GetById(inId string, isCache bool) (output Language) {
 	if err != nil {
 		output.ID = ""
 	} else {
-		languageCache.Set("customer_language:"+inId, output, 0)
+		languageCache.Set("language:"+inId, output, 0)
 	}
 	return output
 }
