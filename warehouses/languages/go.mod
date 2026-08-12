@@ -3,6 +3,13 @@ module github.com/nguoihanoi/golang_shared/warehouses/languages
 go 1.25.0
 
 require (
+	github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20260807155829-4b89fb92fd68
+	github.com/nguoihanoi/golang_shared/libs/database v0.0.0-20260807155829-4b89fb92fd68
+	go.mongodb.org/mongo-driver v1.17.9
+	go.mongodb.org/mongo-driver/v2 v2.8.0
+)
+
+require (
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/charmbracelet/colorprofile v0.2.3-0.20250311203215-f60798e515dc // indirect
@@ -17,8 +24,6 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.16 // indirect
 	github.com/muesli/termenv v0.16.0 // indirect
-	github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20260807155829-4b89fb92fd68 // indirect
-	github.com/nguoihanoi/golang_shared/libs/database v0.0.0-20260807155829-4b89fb92fd68 // indirect
 	github.com/nguoihanoi/golang_shared/libs/process v0.0.0-20260726071625-6d69221739d4 // indirect
 	github.com/redis/go-redis/v9 v9.21.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
@@ -27,8 +32,6 @@ require (
 	github.com/xdg-go/stringprep v1.0.4 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78 // indirect
-	go.mongodb.org/mongo-driver v1.17.9 // indirect
-	go.mongodb.org/mongo-driver/v2 v2.8.0 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	golang.org/x/crypto v0.33.0 // indirect
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
