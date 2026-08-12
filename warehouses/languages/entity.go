@@ -15,5 +15,5 @@ type Language struct {
 	Image     string    `bson:"image" json:"image"`
 	Order     int       `bson:"order" json:"order"`
 	Status    int       `bson:"status" json:"status"`
-	AuthorId  int       `bson:"author_id" json:"author_id"`
+	AuthorId  string    `bson:"author_id" json:"author_id"`
 }
