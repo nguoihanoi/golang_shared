@@ -56,3 +56,7 @@ type AccountType struct {
 	Order       int               `bson:"order" json:"order"`
 	AuthorId    string            `bson:"author_id" json:"author_id"`
 }
+type MiniAccountType struct {
+	ID   string            `bson:"_id,omitempty" json:"_id,omitempty"`
+	Name map[string]string `bson:"name" json:"name"`
+}

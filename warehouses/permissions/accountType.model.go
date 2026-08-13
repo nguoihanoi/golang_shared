@@ -55,7 +55,7 @@ func GetAccountTypeById(inId string, isCache bool) (output AccountType) {
 	return output
 }
 
-func GetAccountTypes() (results []AccountType) {
+func GetAccountTypes() (results []MiniAccountType) {
 	cursor, err := accountTypeCollection.Find(bSon.M{"delete": 0, "status": 1}, bSon.D{{Key: "delete", Value: 1}, {Key: "status", Value: -1}, {Key: "order", Value: 1}}, 0, 0)
 	if err != nil {
 		if err = cursor.All(context.TODO(), &results); err != nil {
