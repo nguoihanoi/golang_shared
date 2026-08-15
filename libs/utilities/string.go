@@ -59,3 +59,8 @@ func (s *stringClass) GetFromFullName(inFullName string) (string, string) {
 	})
 	return inFirstName, inLastName
 }
+
+func (s *stringClass) Trim(str string) string {
+	leftTrimmed := strings.TrimLeft(str, " \t\n\r")
+	return strings.TrimRight(leftTrimmed, " \t\n\r")
+}
