@@ -87,6 +87,14 @@ func Gets() (results []Language) {
 	return results
 }
 
+func GetCodes() (results []string) {
+	languages := Gets()
+	for i := range languages {
+		results = append(results, languages[i].Code)
+	}
+	return results
+}
+
 func Searchs(filter bSon.M, inSortOrder bSon.D, inPage int64, inLimit int64) (results []Language, total int64) {
 	var wg sync.WaitGroup
 	wg.Add(2) // 2 tác vụ song song

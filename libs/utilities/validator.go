@@ -39,3 +39,23 @@ func Validate2(ctx *fastHttp.RequestCtx) (regRequest any, err error) {
 	err = mainValidate.Struct(regRequest)
 	return regRequest, err
 }
+
+func ValidateLangValue(inMap map[string]string, isEmpty bool, langCodes []string) (results []string, status int) {
+	status = 0
+	keys := GetMapKeys(inMap)
+	arrResult := SymmetricDifference(keys, langCodes)
+	if len(arrResult) > 0 {
+		status = 1
+	}
+	for i := range keys {
+		temValue := String().Trim(inMap[keys[i]])
+		if temValue == "" {
+			results = append(results, keys[i])
+			break
+		}
+	}
+	if len(results) > 0 {
+		status = 2
+	}
+	return results, status
+}
