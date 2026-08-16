@@ -76,6 +76,13 @@ func UpdatePermission(inId string, inUpdateData bSon.M, inType string) bool {
 	}
 	return output
 }
+func DeletePermission(inId string) bool {
+	output := permissionCollection.DeleteId(inId)
+	if output == true {
+		permissionCache.Dels("permission:"+inId, "permission_by_type:"+inId)
+	}
+	return output
+}
 
 func GetPermissionById(inId string, isCache bool) (output Permission) {
 	if isCache == true {

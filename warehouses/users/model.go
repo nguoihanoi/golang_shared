@@ -67,7 +67,13 @@ func UpdateUser(inId string, inUpdateData bSon.M) bool {
 	}
 	return output
 }
-
+func DeleteUser(inId string) bool {
+	output := userCollection.DeleteId(inId)
+	if output == true {
+		userCache.Del("user:" + inId)
+	}
+	return output
+}
 func GetUserById(inId string, isCache bool) (output User) {
 	if isCache == true {
 		cacheData := userCache.Get("user:" + inId)
