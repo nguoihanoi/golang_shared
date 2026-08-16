@@ -86,10 +86,30 @@ func GetPermissionById(inId string, isCache bool) (output Permission) {
 		}
 	}
 	err := permissionCollection.FindById(inId).Decode(&output)
-	if err != nil {
+	if err != nil || output.Delete != 0 {
 		output.ID = ""
 	} else {
 		permissionCache.Set("permission:"+inId, output, 0)
+	}
+	return output
+}
+
+func GetPermissionByCode(inCode string) (output Permission) {
+	err := permissionCollection.FindOne(bSon.M{"code": inCode, "delete": 0}).Decode(&output)
+	if err != nil {
+		output.ID = ""
+	}
+	return output
+}
+
+func CheckPermissionCode(inCode string, inId string) (output Permission) {
+	filter := bSon.M{"code": inCode, "delete": 0}
+	if inId != "" {
+		filter["_id"] = bSon.M{"$ne": inId}
+	}
+	err := permissionCollection.FindOne(filter).Decode(&output)
+	if err != nil {
+		output.ID = ""
 	}
 	return output
 }

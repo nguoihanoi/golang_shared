@@ -47,7 +47,7 @@ func GetTypeById(inId string, isCache bool) (output PermissionType) {
 		}
 	}
 	err := permissionTypeCollection.FindById(inId).Decode(&output)
-	if err != nil {
+	if err != nil || output.Delete != 0 {
 		output.ID = ""
 	} else {
 		permissionCache.Set("permission_type:"+inId, output, 0)

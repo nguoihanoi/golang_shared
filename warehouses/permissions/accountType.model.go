@@ -47,7 +47,7 @@ func GetAccountTypeById(inId string, isCache bool) (output AccountType) {
 		}
 	}
 	err := accountTypeCollection.FindById(inId).Decode(&output)
-	if err != nil {
+	if err != nil || output.Delete != 0 {
 		output.ID = ""
 	} else {
 		permissionCache.Set("account_type:"+inId, output, 0)

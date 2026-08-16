@@ -69,7 +69,7 @@ func GetById(inId string, isCache bool) (output Language) {
 		}
 	}
 	err := languageCollection.FindById(inId).Decode(&output)
-	if err != nil {
+	if err != nil || output.Delete != 0 {
 		output.ID = ""
 	} else {
 		languageCache.Set("language:"+inId, output, 0)

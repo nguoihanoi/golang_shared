@@ -89,7 +89,7 @@ func GetGroupById(inId string, isCache bool) (output CustomerGroup) {
 		}
 	}
 	err := groupCollection.FindById(inId).Decode(&output)
-	if err != nil {
+	if err != nil || output.Delete != 0 {
 		output.ID = ""
 	} else {
 		customerCache.Set("customer_group:"+inId, output, 0)
@@ -202,7 +202,7 @@ func GetCustomerById(inId string, isCache bool) (output Customer) {
 }
 
 func GetCustomerByEmail(inEmail string, inId string) (output Customer) {
-	filter := bSon.M{"email": inEmail}
+	filter := bSon.M{"email": inEmail, "delete": 0}
 	if inId != "" {
 		filter["_id"] = bSon.M{"$ne": inId}
 	}
