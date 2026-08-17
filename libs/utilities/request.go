@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"strings"
 
 	mapStructure "github.com/go-viper/mapstructure/v2"
 	fastHttp "github.com/valyala/fasthttp"
@@ -80,6 +81,16 @@ func (r *requestClass) GetHeader(ctx *fastHttp.RequestCtx) (AuthTokenInput, erro
 		return headerDetail, errors.New("unauthorized: header not found in context")
 	}
 	return headerDetail, nil
+}
+
+func (r *requestClass) GetBaseURL(ctx *fastHttp.RequestCtx, inUrl string) string {
+	scheme := "http"
+	if ctx.IsTLS() {
+		scheme = "https"
+	}
+	output := fmt.Sprintf("%s://%s", scheme, ctx.Host())
+	output = strings.Join([]string{output, inUrl}, "/")
+	return output
 }
 
 func (r *requestClass) GetLangCode(ctx *fastHttp.RequestCtx) string {
