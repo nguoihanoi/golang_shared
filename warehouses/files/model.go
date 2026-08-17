@@ -37,7 +37,9 @@ func InitModel(inDb *libDb.DatabaseClass, inRedisClient *libCache.Cache) {
 }
 func Create(insertData File) (output string) {
 	output = ""
-	insertData.ID = primitive.NewObjectID().Hex()
+	if insertData.ID == "" {
+		insertData.ID = primitive.NewObjectID().Hex()
+	}
 	curDate := time.Now()
 	insertData.CreatedAt = curDate
 	insertData.UpdatedAt = curDate
