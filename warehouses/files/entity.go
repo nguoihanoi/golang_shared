@@ -10,6 +10,7 @@ type File struct {
 	CreatedAt     time.Time `bson:"created_at" json:"created_at"`
 	UpdatedAt     time.Time `bson:"updated_at" json:"updated_at"`
 	Name          string    `bson:"name" json:"name"`
+	Ext           string    `bson:"ext" json:"ext"`
 	Size          int64     `bson:"size" json:"size"`
 	Width         int       `bson:"width" json:"width"`
 	Height        int       `bson:"height" json:"height"`
