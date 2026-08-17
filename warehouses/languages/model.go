@@ -95,7 +95,7 @@ func GetCodes() (results []string) {
 	return results
 }
 
-func Searchs(filter bSon.M, inSortOrder bSon.D, inPage int64, inLimit int64) (results []Language, total int64) {
+func Search(filter bSon.M, inSortOrder bSon.D, inPage int64, inLimit int64) (results []Language, total int64) {
 	var wg sync.WaitGroup
 	wg.Add(2) // 2 tác vụ song song
 
