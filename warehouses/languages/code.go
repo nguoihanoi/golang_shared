@@ -61,7 +61,17 @@ func GetCodeByName(inName string) (output LanguageCode) {
 	}
 	return output
 }
-
+func CheckCodeByName(inName string, inId string) (output LanguageCode) {
+	filter := bSon.M{"name": inName}
+	if inId != "" {
+		filter["_id"] = bSon.M{"$ne": inId}
+	}
+	err := languageCodeCollection.FindOne(filter).Decode(&output)
+	if err != nil || output.Delete != 0 {
+		output.ID = ""
+	}
+	return output
+}
 func GetCodeByKey(inKey, inLanguageCode string) string {
 	if val, ok := languageCache.HGet("codes:"+inLanguageCode, inKey).(string); ok && val != "" {
 		return val
