@@ -13,12 +13,16 @@ import (
 
 var dbMongo *libDb.DatabaseClass
 var languageCollection *libDb.CollectionClass
+var languageCodeCollection *libDb.CollectionClass
+var groupCodeCollection *libDb.CollectionClass
 var languageCache *libCache.Cache
 
 func InitModel(inDb *libDb.DatabaseClass, inRedisClient *libCache.Cache) {
 	dbMongo = inDb
 	languageCache = inRedisClient
 	languageCollection = dbMongo.NewCollection("languages")
+	languageCodeCollection = dbMongo.NewCollection("language_codes")
+	groupCodeCollection = dbMongo.NewCollection("group_codes")
 	languageCollection.UpdateIndex([]libDb.CreateIndex{
 		{
 			Name: "delete_1",

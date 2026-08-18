@@ -52,21 +52,21 @@ func Create(insertData File) (output string) {
 func Update(inId string, inUpdateData bSon.M) bool {
 	output := fileCollection.UpdateId(inId, inUpdateData)
 	if output == true {
-		fileCache.Del("language:" + inId)
+		fileCache.Del("file:" + inId)
 	}
 	return output
 }
 func Delete(inId string) bool {
 	output := fileCollection.DeleteId(inId)
 	if output == true {
-		fileCache.Del("language:" + inId)
+		fileCache.Del("file:" + inId)
 	}
 	return output
 }
 
 func GetById(inId string, isCache bool) (output File) {
 	if isCache == true {
-		cacheData := fileCache.Get("language:" + inId)
+		cacheData := fileCache.Get("file:" + inId)
 		if cacheData != nil {
 			output, _ = cacheData.(File)
 			return output
@@ -76,7 +76,7 @@ func GetById(inId string, isCache bool) (output File) {
 	if err != nil || output.Delete != 0 {
 		output.ID = ""
 	} else {
-		fileCache.Set("language:"+inId, output, 0)
+		fileCache.Set("file:"+inId, output, 0)
 	}
 	return output
 }

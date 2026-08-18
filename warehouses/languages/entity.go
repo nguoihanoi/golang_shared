@@ -17,3 +17,22 @@ type Language struct {
 	Status    int       `bson:"status" json:"status"`
 	AuthorId  string    `bson:"author_id" json:"author_id"`
 }
+
+type LanguageCode struct {
+	ID        string            `bson:"_id" json:"_id"`
+	Delete    int               `bson:"delete" json:"delete"`
+	CreatedAt time.Time         `bson:"created_at" json:"created_at"`
+	UpdatedAt time.Time         `bson:"updated_at" json:"updated_at"`
+	Name      string            `bson:"name" json:"name"`
+	Value     map[string]string `bson:"value" json:"value"`
+	Type      int               `bson:"type" json:"type"`
+	GroupId   string            `bson:"group_id" json:"group_id"`
+}
+type GroupCode struct {
+	ID        string    `bson:"_id" json:"_id"`
+	Delete    int       `bson:"delete" json:"delete"`
+	CreatedAt time.Time `bson:"created_at" json:"created_at"`
+	UpdatedAt time.Time `bson:"updated_at" json:"updated_at"`
+	Name      string    `bson:"name" json:"name"`
+	Code      string    `bson:"code" json:"code"`
+}
