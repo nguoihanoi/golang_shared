@@ -64,7 +64,15 @@ func GetGroupCodeById(inId string, isCache bool) (output GroupCode) {
 	}
 	return output
 }
-
+func GetGroupCodes() (results []GroupCode) {
+	cursor, err := groupCodeCollection.Find(bSon.M{"delete": 0}, bSon.D{{Key: "delete", Value: 1}, {Key: "name", Value: 1}}, 0, 0)
+	if err != nil {
+		if err = cursor.All(context.TODO(), &results); err != nil {
+			panic(err)
+		}
+	}
+	return results
+}
 func SearchGroupCode(filter bSon.M, inSortOrder bSon.D, inPage int64, inLimit int64) (results []GroupCode, total int64) {
 	var wg sync.WaitGroup
 	wg.Add(2) // 2 tác vụ song song
