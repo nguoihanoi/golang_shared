@@ -54,6 +54,13 @@ func GetCodeById(inId string, isCache bool) (output LanguageCode) {
 	}
 	return output
 }
+func GetCodeByName(inName string) (output LanguageCode) {
+	err := languageCodeCollection.FindOne(bSon.M{"name": inName}).Decode(&output)
+	if err != nil || output.Delete != 0 {
+		output.ID = ""
+	}
+	return output
+}
 
 func GetCodeByKey(inKey, inLanguageCode string) string {
 	if val, ok := languageCache.HGet("codes:"+inLanguageCode, inKey).(string); ok && val != "" {
