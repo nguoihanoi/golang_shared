@@ -37,7 +37,17 @@ func DeleteGroupCode(inId string) bool {
 	}
 	return output
 }
-
+func CheckGroupCode(inCode string, inId string) (output GroupCode) {
+	filter := bSon.M{"code": inCode}
+	if inId != "" {
+		filter["_id"] = bSon.M{"$ne": inId}
+	}
+	err := groupCodeCollection.FindOne(filter).Decode(&output)
+	if err != nil || output.Delete != 0 {
+		output.ID = ""
+	}
+	return output
+}
 func GetGroupCodeById(inId string, isCache bool) (output GroupCode) {
 	if isCache == true {
 		cacheData := languageCache.Get("group_code:" + inId)
