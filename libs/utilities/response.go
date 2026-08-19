@@ -6,16 +6,31 @@ import (
 	"fmt"
 	"log"
 
+	libCache "github.com/nguoihanoi/golang_shared/libs/cache"
 	libProcess "github.com/nguoihanoi/golang_shared/libs/process"
 	fastHttp "github.com/valyala/fasthttp"
 )
 
+// var languageCodeCache *libCache.Cache
 type responseClass struct {
 	//radius float64 // Private field
+	cache *libCache.Cache
+	key   string
 }
 
-func Response() *responseClass {
-	return &responseClass{}
+func Response(inRedisClient *libCache.Cache, inKey string) *responseClass {
+	return &responseClass{
+		cache: inRedisClient,
+		key:   inKey + ":",
+	}
+}
+func (r *responseClass) getCodeByKey(inKey, inLanguageCode string) string {
+	cacheKey := r.key + inLanguageCode
+	if val, ok := r.cache.HGet(cacheKey, inKey).(string); ok && val != "" {
+		return val
+	}
+	r.cache.HSet(cacheKey, inKey, inKey)
+	return inKey
 }
 
 // Message detail
@@ -53,8 +68,8 @@ func (r *responseClass) GetOutput(inStatus bool, inMessage string, inStatusCode 
 	output.Data = nil
 	return output
 }
-
 func (r *responseClass) SendOutput(ctx *fastHttp.RequestCtx, inResponse ContentResponseOutput) {
+	inResponse.Message = r.getCodeByKey(inResponse.Message, "vi")
 	responseOutput := ResponseOutput{
 		Status:  inResponse.Status,
 		Message: inResponse.Message,
@@ -73,6 +88,7 @@ func (r *responseClass) SendOutput(ctx *fastHttp.RequestCtx, inResponse ContentR
 
 func (r *responseClass) SendError(ctx *fastHttp.RequestCtx, inMessage string, inError libProcess.E, inStatusCode int) {
 	log.Println(inError)
+	inMessage = r.getCodeByKey(inMessage, "vi")
 	resp := r.GetOutput(false, inMessage, inStatusCode)
 	resp.Data = fmt.Sprint(inError)
 	r.SendOutput(ctx, resp)
