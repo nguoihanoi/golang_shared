@@ -68,7 +68,7 @@ func (r *ResponseClass) GetOutput(inStatus bool, inMessage string, inStatusCode 
 	output.Data = nil
 	return output
 }
-func getLangCode(ctx *fastHttp.RequestCtx) string {
+func GetLangCode(ctx *fastHttp.RequestCtx) string {
 	langCode := ctx.Request.Header.Peek("X-Lang-Code")
 	if len(langCode) == 0 {
 		return "vi"
@@ -76,7 +76,7 @@ func getLangCode(ctx *fastHttp.RequestCtx) string {
 	return string(langCode)
 }
 func (r *ResponseClass) SendOutput(ctx *fastHttp.RequestCtx, inResponse ContentResponseOutput) {
-	langCode := getLangCode(ctx)
+	langCode := GetLangCode(ctx)
 	inResponse.Message = r.getCodeByKey(inResponse.Message, langCode)
 	responseOutput := ResponseOutput{
 		Status:  inResponse.Status,
@@ -96,7 +96,7 @@ func (r *ResponseClass) SendOutput(ctx *fastHttp.RequestCtx, inResponse ContentR
 
 func (r *ResponseClass) SendError(ctx *fastHttp.RequestCtx, inMessage string, inError libProcess.E, inStatusCode int) {
 	log.Println(inError)
-	langCode := getLangCode(ctx)
+	langCode := GetLangCode(ctx)
 	inMessage = r.getCodeByKey(inMessage, langCode)
 	resp := r.GetOutput(false, inMessage, inStatusCode)
 	resp.Data = fmt.Sprint(inError)
