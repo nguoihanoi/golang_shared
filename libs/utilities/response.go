@@ -12,19 +12,19 @@ import (
 )
 
 // var languageCodeCache *libCache.Cache
-type responseClass struct {
+type ResponseClass struct {
 	//radius float64 // Private field
 	cache *libCache.Cache
 	key   string
 }
 
-func Response(inRedisClient *libCache.Cache, inKey string) *responseClass {
-	return &responseClass{
+func Response(inRedisClient *libCache.Cache, inKey string) *ResponseClass {
+	return &ResponseClass{
 		cache: inRedisClient,
 		key:   inKey + ":",
 	}
 }
-func (r *responseClass) getCodeByKey(inKey, inLanguageCode string) string {
+func (r *ResponseClass) getCodeByKey(inKey, inLanguageCode string) string {
 	cacheKey := r.key + inLanguageCode
 	if val, ok := r.cache.HGet(cacheKey, inKey).(string); ok && val != "" {
 		return val
@@ -34,12 +34,12 @@ func (r *responseClass) getCodeByKey(inKey, inLanguageCode string) string {
 }
 
 // Message detail
-func (r *responseClass) Message(status bool, message string, inStatusCode int) map[string]any {
+func (r *ResponseClass) Message(status bool, message string, inStatusCode int) map[string]any {
 	return map[string]any{"status": status, "message": message, "statusCode": inStatusCode}
 }
 
 // Send detail
-func (r *responseClass) Send(ctx *fastHttp.RequestCtx, data map[string]any) {
+func (r *ResponseClass) Send(ctx *fastHttp.RequestCtx, data map[string]any) {
 	ctx.Request.Header.Set("Accept-Encoding", "gzip, deflate, sdhc")
 	ctx.Request.Header.Add("Content-Encoding", "gzip")
 	ctx.Response.Header.SetCanonical([]byte("Content-Type"), []byte("application/json"))
@@ -61,14 +61,14 @@ type ResponseOutput struct {
 	Data    any    `json:"data"`
 }
 
-func (r *responseClass) GetOutput(inStatus bool, inMessage string, inStatusCode int) (output ContentResponseOutput) {
+func (r *ResponseClass) GetOutput(inStatus bool, inMessage string, inStatusCode int) (output ContentResponseOutput) {
 	output.Status = inStatus
 	output.Message = inMessage
 	output.StatusCode = inStatusCode
 	output.Data = nil
 	return output
 }
-func (r *responseClass) SendOutput(ctx *fastHttp.RequestCtx, inResponse ContentResponseOutput) {
+func (r *ResponseClass) SendOutput(ctx *fastHttp.RequestCtx, inResponse ContentResponseOutput) {
 	inResponse.Message = r.getCodeByKey(inResponse.Message, "vi")
 	responseOutput := ResponseOutput{
 		Status:  inResponse.Status,
@@ -86,7 +86,7 @@ func (r *responseClass) SendOutput(ctx *fastHttp.RequestCtx, inResponse ContentR
 	ctx.SetBody(jsonResponse)
 }
 
-func (r *responseClass) SendError(ctx *fastHttp.RequestCtx, inMessage string, inError libProcess.E, inStatusCode int) {
+func (r *ResponseClass) SendError(ctx *fastHttp.RequestCtx, inMessage string, inError libProcess.E, inStatusCode int) {
 	log.Println(inError)
 	inMessage = r.getCodeByKey(inMessage, "vi")
 	resp := r.GetOutput(false, inMessage, inStatusCode)
@@ -97,7 +97,7 @@ func (r *responseClass) SendError(ctx *fastHttp.RequestCtx, inMessage string, in
 // GetUserIDFromContext extracts the user ID from the request context
 // This function relies on the AuthMiddleware having previously validated the token
 // and added the user ID to the context.
-func (r *responseClass) GetUserIDFromContext(ctx *fastHttp.RequestCtx) (string, error) {
+func (r *ResponseClass) GetUserIDFromContext(ctx *fastHttp.RequestCtx) (string, error) {
 	userID, ok := ctx.UserValue("userId").(string)
 	if !ok || userID == "" {
 		return "", errors.New("unauthorized: user ID not found in context")
