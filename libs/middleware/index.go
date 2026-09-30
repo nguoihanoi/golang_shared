@@ -55,7 +55,7 @@ func Post(h fastHttp.RequestHandler) fastHttp.RequestHandler {
 func Init(inOrigin string, inMethod string, inToken string) *CorsClass {
 	secretJwtKey = inToken
 	newToken, nextTime, err := createToken(`{"email":"playhard24h@gmail.com","password":"abc123!@#"}`)
-	newToken2, nextTime2, err2 := createToken(`{"customer_id":"1","user_id":"2"}`)
+	newToken2, nextTime2, err2 := createToken(`{"customer_id":"1","user_id":"2","lang_code":"vi"}`)
 	log.Println(newToken, nextTime, err)
 	log.Println(newToken2, nextTime2, err2)
 	return &CorsClass{
