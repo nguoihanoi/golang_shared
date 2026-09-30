@@ -38,7 +38,8 @@ func createToken(inData any) (string, time.Time, error) {
 			"exp":  nextTime.Unix(),
 		})
 
-	tokenString, err := token.SignedString(secretJwtKey)
+	secretKey := getSecretKey()
+	tokenString, err := token.SignedString(secretKey)
 	if err != nil {
 		return "", nextTime, err
 	}
