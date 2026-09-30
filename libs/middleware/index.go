@@ -120,6 +120,7 @@ func (c *CorsClass) CorsMiddleware(next fastHttp.RequestHandler) fastHttp.Reques
 				ctx.Response.Header.Set("X-User-Id", authReq.UserId)
 				ctx.Request.SetBodyString(temBodyValue)
 			} else {
+				log.Println(err)
 				ctx.SetStatusCode(fastHttp.StatusForbidden)
 				return
 			}
