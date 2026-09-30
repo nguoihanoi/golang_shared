@@ -28,6 +28,7 @@ var secretJwtKey string
 
 func getSecretKey() []byte {
 	temStr := strings.Split(time.Now().UTC().String(), " ")
+	log.Println(secretJwtKey + temStr[0])
 	return []byte(secretJwtKey + temStr[0])
 }
 
