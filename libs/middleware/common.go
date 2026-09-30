@@ -11,8 +11,9 @@ import (
 )
 
 type authRequest struct {
-	CustomerId string `json:"customer_id" bson:"customer_id"`
-	UserId     string `json:"user_id" bson:"user_id"`
+	CustomerId   string `json:"customer_id" bson:"customer_id"`
+	UserId       string `json:"user_id" bson:"user_id"`
+	LanguageCode string `bson:"lang_code" json:"lang_code"`
 }
 type bodyRequest struct {
 	Key   string `json:"key" bson:"key"`
@@ -32,11 +33,10 @@ func getSecretKey() []byte {
 
 func createToken(inData any) (string, time.Time, error) {
 	nextTime := time.Now().Add(time.Hour * 24)
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
-		jwt.MapClaims{
-			"data": inData,
-			"exp":  nextTime.Unix(),
-		})
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"data": inData,
+		"exp":  nextTime.Unix(),
+	})
 
 	secretKey := getSecretKey()
 	tokenString, err := token.SignedString(secretKey)
