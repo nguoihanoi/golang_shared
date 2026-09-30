@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"encoding/json"
+	"log"
 	"strings"
 	"time"
 
@@ -28,6 +29,23 @@ func getSecretKey() []byte {
 	temStr := strings.Split(time.Now().UTC().String(), " ")
 	return []byte(secretJwtKey + temStr[0])
 }
+
+func createToken(inData any) (string, time.Time, error) {
+	nextTime := time.Now().Add(time.Hour * 24)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
+		jwt.MapClaims{
+			"data": inData,
+			"exp":  nextTime.Unix(),
+		})
+
+	tokenString, err := token.SignedString(secretJwtKey)
+	if err != nil {
+		return "", nextTime, err
+	}
+
+	return tokenString, nextTime, nil
+}
+
 func verifyToken(tokenString string) (any, error) {
 	secretKey := getSecretKey()
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (any, error) {
@@ -65,30 +83,36 @@ func extractHeader(ctx *fastHttp.RequestCtx, inKey string) string {
 
 func processAuthReq(ctx *fastHttp.RequestCtx, bodyRequest bodyRequest) (authRequest, bool) {
 	authReq := authRequest{}
-	authValue, err3 := verifyToken(bodyRequest.Value)
+	authValue, err := verifyToken(bodyRequest.Value)
 	statusOk := false
-	if err3 == nil {
+	if err == nil {
 		temAuthValue, status := authValue.(string)
 		if status == true {
-			err4 := json.Unmarshal([]byte(temAuthValue), &authReq)
-			if err4 == nil {
+			err2 := json.Unmarshal([]byte(temAuthValue), &authReq)
+			if err2 == nil {
 				ctx.Response.Header.Set("X-Customer-Id", authReq.CustomerId)
 				ctx.Response.Header.Set("X-User-Id", authReq.UserId)
 				statusOk = true
+			} else {
+				log.Println(err2)
 			}
 		}
+	} else {
+		log.Println(err)
 	}
 	return authReq, statusOk
 }
 
 func processBodyReq(ctx *fastHttp.RequestCtx, bodyRequest bodyRequest) (string, bool) {
-	bodyValue, err2 := verifyToken(bodyRequest.Key)
-	if err2 == nil {
+	bodyValue, err := verifyToken(bodyRequest.Key)
+	if err == nil {
 		temBodyValue, status := bodyValue.(string)
 		if status == true {
 			ctx.Request.SetBodyString(temBodyValue)
 		}
 		return temBodyValue, status
+	} else {
+		log.Println(err)
 	}
 	return "", false
 }
