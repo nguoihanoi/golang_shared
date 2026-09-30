@@ -67,7 +67,7 @@ func (c *CorsClass) CorsMiddleware(next fastHttp.RequestHandler) fastHttp.Reques
 		ctx.Response.Header.Set("Access-Control-Allow-Origin", c.origin)
 		ctx.Response.Header.Set("Access-Control-Expose-Headers", "Authorization")
 		ctx.Response.Header.Set("Access-Control-Allow-Methods", c.methods)
-		ctx.Response.Header.Set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Accept, Content-Type, Content-Length, Accept-Encoding, Authorization, X-CSRF-Token, Cache-Control")
+		ctx.Response.Header.Set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Accept, Content-Type, Content-Length, Accept-Encoding, Authorization, X-CSRF-Token, Cache-Control, X-API-Key, X-API-Cmd")
 		// Handle preflight (OPTIONS) requests
 		if string(ctx.Method()) == "OPTIONS" {
 			ctx.SetStatusCode(fastHttp.StatusOK)
