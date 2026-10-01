@@ -113,3 +113,25 @@ func (r *requestClass) GetDownloadUrl(ctx *fastHttp.RequestCtx, inId string) str
 	serverURL := r.GetServerUrl(ctx) + "/file/" + inId
 	return serverURL
 }
+
+func GetLangCode(ctx *fastHttp.RequestCtx) string {
+	langCode := ctx.Request.Header.Peek("X-Lang-Code")
+	if len(langCode) == 0 {
+		return "vi"
+	}
+	return string(langCode)
+}
+func GetCustomerId(ctx *fastHttp.RequestCtx) string {
+	customerId := ctx.Request.Header.Peek("X-Customer-Id")
+	if len(customerId) == 0 {
+		return ""
+	}
+	return string(customerId)
+}
+func GetUserId(ctx *fastHttp.RequestCtx) string {
+	userId := ctx.Request.Header.Peek("X-User-Id")
+	if len(userId) == 0 {
+		return ""
+	}
+	return string(userId)
+}
