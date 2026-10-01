@@ -75,6 +75,20 @@ func GetLangCode(ctx *fastHttp.RequestCtx) string {
 	}
 	return string(langCode)
 }
+func GetCustomerId(ctx *fastHttp.RequestCtx) string {
+	langCode := ctx.Request.Header.Peek("X-Customer-Id")
+	if len(langCode) == 0 {
+		return "vi"
+	}
+	return string(langCode)
+}
+func GetUserId(ctx *fastHttp.RequestCtx) string {
+	langCode := ctx.Request.Header.Peek("X-User-Id")
+	if len(langCode) == 0 {
+		return "vi"
+	}
+	return string(langCode)
+}
 func (r *ResponseClass) SendOutput(ctx *fastHttp.RequestCtx, inResponse ContentResponseOutput) {
 	langCode := GetLangCode(ctx)
 	inResponse.Message = r.getCodeByKey(inResponse.Message, langCode)

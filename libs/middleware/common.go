@@ -92,8 +92,6 @@ func processAuthReq(ctx *fastHttp.RequestCtx, bodyRequest bodyRequest) (authRequ
 		if status == true {
 			err2 := json.Unmarshal([]byte(temAuthValue), &authReq)
 			if err2 == nil {
-				ctx.Response.Header.Set("X-Customer-Id", authReq.CustomerId)
-				ctx.Response.Header.Set("X-User-Id", authReq.UserId)
 				statusOk = true
 			} else {
 				log.Println(err2)
