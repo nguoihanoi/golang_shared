@@ -13,6 +13,7 @@ type PermissionType struct {
 	Name      map[string]string   `bson:"name" json:"name"`
 	Values    map[string][]string `bson:"values" json:"values"`
 	Order     int                 `bson:"order" json:"order"`
+	Status    int                 `bson:"status" json:"status"`
 	AuthorId  string              `bson:"author_id" json:"author_id"`
 }
 
