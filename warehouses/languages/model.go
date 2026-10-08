@@ -88,6 +88,7 @@ func Gets() (results []Language) {
 		if err = cursor.All(context.TODO(), &results); err != nil {
 			log.Println(err)
 		}
+		log.Println("results", results)
 	} else {
 		log.Println(err)
 	}
