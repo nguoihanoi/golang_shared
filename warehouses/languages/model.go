@@ -84,12 +84,12 @@ func GetById(inId string, isCache bool) (output Language) {
 
 func Gets() (results []Language) {
 	cursor, err := languageCollection.Find(bSon.M{"delete": 0, "status": 1}, bSon.D{{Key: "delete", Value: 1}, {Key: "status", Value: -1}, {Key: "order", Value: 1}}, 1, 0)
-	if err != nil {
+	if err == nil {
 		if err = cursor.All(context.TODO(), &results); err != nil {
-			log.Println("1", err)
+			log.Println(err)
 		}
 	} else {
-		log.Println("2", err)
+		log.Println(err)
 	}
 	return results
 }
