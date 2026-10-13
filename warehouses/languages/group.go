@@ -66,7 +66,7 @@ func GetGroupCodeById(inId string, isCache bool) (output GroupCode) {
 }
 func GetGroupCodes() (results []GroupCode) {
 	cursor, err := groupCodeCollection.Find(bSon.M{"delete": 0}, bSon.D{{Key: "delete", Value: 1}, {Key: "name", Value: 1}}, 0, 0)
-	if err != nil {
+	if err == nil {
 		if err = cursor.All(context.TODO(), &results); err != nil {
 			panic(err)
 		}

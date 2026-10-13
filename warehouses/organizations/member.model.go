@@ -55,7 +55,7 @@ func GetMemberById(inId string, isCache bool) (output Member) {
 }
 func GetMembers(inOrganizationId string) (results []Member) {
 	cursor, err := memberCollection.Find(bSon.M{"delete": 0, "organization_id": inOrganizationId}, bSon.D{{Key: "delete", Value: 1}, {Key: "organization_id", Value: 1}, {Key: "host", Value: -1}}, 0, 0)
-	if err != nil {
+	if err == nil {
 		if err = cursor.All(context.TODO(), &results); err != nil {
 			panic(err)
 		}
@@ -64,7 +64,7 @@ func GetMembers(inOrganizationId string) (results []Member) {
 }
 func GetOrganizationsByCustomerId(inCustomerId string) (results []Member) {
 	cursor, err := memberCollection.Find(bSon.M{"delete": 0, "customer_id": inCustomerId}, bSon.D{{Key: "delete", Value: 1}, {Key: "customer_id", Value: 1}}, 0, 0)
-	if err != nil {
+	if err == nil {
 		if err = cursor.All(context.TODO(), &results); err != nil {
 			panic(err)
 		}

@@ -99,7 +99,7 @@ func GetGroupById(inId string, isCache bool) (output CustomerGroup) {
 
 func GetGroups() (results []CustomerGroup) {
 	cursor, err := groupCollection.Find(bSon.M{"delete": 0, "status": 1}, bSon.D{{Key: "delete", Value: 1}, {Key: "status", Value: -1}, {Key: "order", Value: 1}}, 0, 0)
-	if err != nil {
+	if err == nil {
 		if err = cursor.All(context.TODO(), &results); err != nil {
 			panic(err)
 		}
