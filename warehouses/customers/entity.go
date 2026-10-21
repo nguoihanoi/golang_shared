@@ -35,6 +35,7 @@ type CustomerGroup struct {
 	Description map[string]string `bson:"description" json:"description"`
 	Status      int               `bson:"status" json:"status"`
 	Order       int               `bson:"order" json:"order"`
+	AuthorId    string            `bson:"author_id" json:"author_id"`
 }
 
 // CustomerMeta represents a customer meta in the system
