@@ -184,6 +184,14 @@ func UpdateCustomer(inId string, inUpdateData bSon.M) bool {
 	return output
 }
 
+func DeleteCustomer(inId string) bool {
+	output := customerCollection.DeleteId(inId)
+	if output == true {
+		customerCache.Del("customer:" + inId)
+	}
+	return output
+}
+
 func GetCustomerById(inId string, isCache bool) (output Customer) {
 	if isCache == true {
 		cacheData := customerCache.Get("customer:" + inId)
