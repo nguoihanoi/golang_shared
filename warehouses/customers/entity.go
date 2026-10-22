@@ -10,11 +10,13 @@ type Customer struct {
 	Delete           int       `bson:"delete" json:"delete"`
 	CreatedAt        time.Time `bson:"created_at" json:"created_at"`
 	UpdatedAt        time.Time `bson:"updated_at" json:"updated_at"`
-	CustomerGroup    string    `bson:"customer_group_id" json:"customer_group_id"`
+	CustomerGroupID  string    `bson:"customer_group_id" json:"customer_group_id"`
 	Email            string    `bson:"email" json:"email"`
 	LanguageCode     string    `bson:"language_code" json:"language_code"`
 	FirstName        string    `bson:"first_name" json:"first_name"`
 	LastName         string    `bson:"last_name" json:"last_name"`
+	Gender           int       `bson:"gender" json:"gender"`
+	BirthDay         time.Time `bson:"birth_day" json:"birth_day"`
 	PasswordHash     string    `bson:"password_hash" json:"password_hash"` // Never send this to client
 	Password         string    `bson:"password" json:"password"`           // Never send this to client
 	ResetToken       string    `bson:"reset_token" json:"reset_token"`
