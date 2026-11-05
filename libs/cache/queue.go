@@ -25,6 +25,7 @@ func (q *Queue) Push(inValue any) {
 func (q *Queue) Pop() any {
 	cacheData, err := q.cache.Db.LPop(q.cache.Ctx, q.name).Result()
 	if err == nil {
+		log.Println("cacheData", cacheData)
 		return formatData(cacheData)
 	} else {
 		log.Println("queue cache pop", err)
