@@ -39,10 +39,10 @@ func DeleteType(inId string) bool {
 }
 
 func GetTypeById(inId string, isCache bool) (output PermissionType) {
+	inKey := "permission_type:" + inId
 	if isCache == true {
-		cacheData := permissionCache.Get("permission_type:" + inId)
-		if cacheData != nil {
-			output, _ = cacheData.(PermissionType)
+		err2 := permissionCache.GetD(inKey, &output)
+		if err2 == nil {
 			return output
 		}
 	}
@@ -50,7 +50,7 @@ func GetTypeById(inId string, isCache bool) (output PermissionType) {
 	if err != nil || output.Delete != 0 {
 		output.ID = ""
 	} else {
-		permissionCache.Set("permission_type:"+inId, output, 0)
+		permissionCache.Set(inKey, output, 0)
 	}
 	return output
 }

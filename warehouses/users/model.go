@@ -75,10 +75,10 @@ func DeleteUser(inId string) bool {
 	return output
 }
 func GetUserById(inId string, isCache bool) (output User) {
+	inKey := "user:" + inId
 	if isCache == true {
-		cacheData := userCache.Get("user:" + inId)
-		if cacheData != nil {
-			output, _ = cacheData.(User)
+		err2 := userCache.GetD(inKey, &output)
+		if err2 == nil {
 			return output
 		}
 	}
@@ -86,7 +86,7 @@ func GetUserById(inId string, isCache bool) (output User) {
 	if err != nil || output.Delete != 0 {
 		output.ID = ""
 	} else {
-		userCache.Set("user:"+inId, output, 0)
+		userCache.Set(inKey, output, 0)
 	}
 	return output
 }

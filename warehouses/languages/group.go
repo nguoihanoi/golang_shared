@@ -49,10 +49,10 @@ func CheckGroupCode(inCode string, inId string) (output GroupCode) {
 	return output
 }
 func GetGroupCodeById(inId string, isCache bool) (output GroupCode) {
+	inKey := "group_code:" + inId
 	if isCache == true {
-		cacheData := languageCache.Get("group_code:" + inId)
-		if cacheData != nil {
-			output, _ = cacheData.(GroupCode)
+		err2 := languageCache.GetD(inKey, &output)
+		if err2 == nil {
 			return output
 		}
 	}
@@ -60,7 +60,7 @@ func GetGroupCodeById(inId string, isCache bool) (output GroupCode) {
 	if err != nil || output.Delete != 0 {
 		output.ID = ""
 	} else {
-		languageCache.Set("group_code:"+inId, output, 0)
+		languageCache.Set(inKey, output, 0)
 	}
 	return output
 }

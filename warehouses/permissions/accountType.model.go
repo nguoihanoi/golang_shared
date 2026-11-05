@@ -39,10 +39,10 @@ func DeleteAccountType(inId string) bool {
 }
 
 func GetAccountTypeById(inId string, isCache bool) (output AccountType) {
+	inKey := "account_type:" + inId
 	if isCache == true {
-		cacheData := permissionCache.Get("account_type:" + inId)
-		if cacheData != nil {
-			output, _ = cacheData.(AccountType)
+		err2 := permissionCache.GetD(inKey, &output)
+		if err2 == nil {
 			return output
 		}
 	}
@@ -50,7 +50,7 @@ func GetAccountTypeById(inId string, isCache bool) (output AccountType) {
 	if err != nil || output.Delete != 0 {
 		output.ID = ""
 	} else {
-		permissionCache.Set("account_type:"+inId, output, 0)
+		permissionCache.Set(inKey, output, 0)
 	}
 	return output
 }

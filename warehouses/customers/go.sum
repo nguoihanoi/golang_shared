@@ -44,6 +44,8 @@ github.com/muesli/termenv v0.16.0 h1:S5AlUN9dENB57rsbnkPyfdGuWIlkmzJjbFf0Tf5FWUc
 github.com/muesli/termenv v0.16.0/go.mod h1:ZRfOIKPFDYQoDFF4Olj7/QJbW60Ol/kL1pU3VfY/Cnk=
 github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20260731101451-ed2b23ebe550 h1:0SoVD1BgmGsXYaGMTRl6vezWVyTLUaRJ1YbZlP3m3tM=
 github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20260731101451-ed2b23ebe550/go.mod h1:FeOWVOe+7JcSsZZAc5/x4tTXTs7DjyKtI8BJT28NrWg=
+github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20261105082751-b28d166c43dc h1:QV45ZsogVmPq95cmBOE8QQQ6MJsYSz0rmSDbihQ3eZ8=
+github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20261105082751-b28d166c43dc/go.mod h1:FeOWVOe+7JcSsZZAc5/x4tTXTs7DjyKtI8BJT28NrWg=
 github.com/nguoihanoi/golang_shared/libs/crypto v0.0.0-20260727103103-eab92e6e930e h1:g67c7OGUP5zZaBytAdtLe1yuWBEiZEVsYiWE2Nnm8qY=
 github.com/nguoihanoi/golang_shared/libs/crypto v0.0.0-20260727103103-eab92e6e930e/go.mod h1:gghUNpZvckQOW6gJ3D/cvBt0YnSKBMkANIm1CwFLBsI=
 github.com/nguoihanoi/golang_shared/libs/crypto v0.0.0-20260731101451-ed2b23ebe550 h1:xC4mCXJbEFM/qIvEKDzxz1pDty3Qr5hUi3SqVsv8DTo=
@@ -58,6 +60,8 @@ github.com/nguoihanoi/golang_shared/libs/process v0.0.0-20260727103103-eab92e6e9
 github.com/nguoihanoi/golang_shared/libs/process v0.0.0-20260727103103-eab92e6e930e/go.mod h1:u8m/pOkVEnozantr7T/xc9lAfD2/AzzdZI9oPJBhqws=
 github.com/nguoihanoi/golang_shared/libs/utilities v0.0.0-20260731101451-ed2b23ebe550 h1:gMAtvSdQR8FGDBsb/o4W8SYWSjjJYGA/BcnXJS7D6UU=
 github.com/nguoihanoi/golang_shared/libs/utilities v0.0.0-20260731101451-ed2b23ebe550/go.mod h1:1WvId84bBKngJGPZ8e4tsson3InEOoUiIJBHCFGBm+8=
+github.com/nguoihanoi/golang_shared/libs/utilities v0.0.0-20261105083041-9310f3dd5f75 h1:yVAsEKxdCZ/L17VzXyo2rzBjrdynA3cotS7l7zdQc24=
+github.com/nguoihanoi/golang_shared/libs/utilities v0.0.0-20261105083041-9310f3dd5f75/go.mod h1:+UjfV3cgALDxeJBChW1XvwFuYFMh/wuBM/AZ/9n1k3w=
 github.com/redis/go-redis/v9 v9.21.0 h1:FPBE4hhbAke+TLmcY3WkpbDffJEomdqPn3HYiqAtL9E=
 github.com/redis/go-redis/v9 v9.21.0/go.mod h1:v/M13XI1PVCDcm01VtPFOADfZtHf8YW3baQf57KlIkA=
 github.com/rivo/uniseg v0.2.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=

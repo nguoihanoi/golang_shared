@@ -66,10 +66,10 @@ func Delete(inId string) bool {
 }
 
 func GetById(inId string, isCache bool) (output Language) {
+	inKey := "language:" + inId
 	if isCache == true {
-		cacheData := languageCache.Get("language:" + inId)
-		if cacheData != nil {
-			output, _ = cacheData.(Language)
+		err2 := languageCache.GetD(inKey, &output)
+		if err2 == nil {
 			return output
 		}
 	}
@@ -77,7 +77,7 @@ func GetById(inId string, isCache bool) (output Language) {
 	if err != nil || output.Delete != 0 {
 		output.ID = ""
 	} else {
-		languageCache.Set("language:"+inId, output, 0)
+		languageCache.Set(inKey, output, 0)
 	}
 	return output
 }

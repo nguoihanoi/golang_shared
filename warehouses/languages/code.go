@@ -39,10 +39,10 @@ func DeleteCode(inId string) bool {
 }
 
 func GetCodeById(inId string, isCache bool) (output LanguageCode) {
+	inKey := "language_code:" + inId
 	if isCache == true {
-		cacheData := languageCache.Get("language_code:" + inId)
-		if cacheData != nil {
-			output, _ = cacheData.(LanguageCode)
+		err2 := languageCache.GetD(inKey, &output)
+		if err2 == nil {
 			return output
 		}
 	}
@@ -50,7 +50,7 @@ func GetCodeById(inId string, isCache bool) (output LanguageCode) {
 	if err != nil || output.Delete != 0 {
 		output.ID = ""
 	} else {
-		languageCache.Set("language_code:"+inId, output, 0)
+		languageCache.Set(inKey, output, 0)
 	}
 	return output
 }

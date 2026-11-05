@@ -48,6 +48,8 @@ github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20260807095719-2d4c87f19a9
 github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20260807095719-2d4c87f19a91/go.mod h1:FeOWVOe+7JcSsZZAc5/x4tTXTs7DjyKtI8BJT28NrWg=
 github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20260807155552-9a5c361ae86c h1:OkeQXaCURYM8reLk2xweSMeICa5cxXbXFaW2UeVxUUM=
 github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20260807155552-9a5c361ae86c/go.mod h1:FeOWVOe+7JcSsZZAc5/x4tTXTs7DjyKtI8BJT28NrWg=
+github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20261105083041-9310f3dd5f75 h1:9yAh/ukWsWWd4YDFoxT9yApDU0ucRSLsrb39/SLBjqA=
+github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20261105083041-9310f3dd5f75/go.mod h1:FeOWVOe+7JcSsZZAc5/x4tTXTs7DjyKtI8BJT28NrWg=
 github.com/nguoihanoi/golang_shared/libs/crypto v0.0.0-20260727103103-eab92e6e930e h1:g67c7OGUP5zZaBytAdtLe1yuWBEiZEVsYiWE2Nnm8qY=
 github.com/nguoihanoi/golang_shared/libs/crypto v0.0.0-20260727103103-eab92e6e930e/go.mod h1:gghUNpZvckQOW6gJ3D/cvBt0YnSKBMkANIm1CwFLBsI=
 github.com/nguoihanoi/golang_shared/libs/database v0.0.0-20260807095719-2d4c87f19a91 h1:OoGRmAXpnJiZX1Bm0lWd56AMPlqlNTW5G91CnbXxShA=

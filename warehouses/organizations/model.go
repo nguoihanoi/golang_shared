@@ -76,10 +76,10 @@ func Delete(inId string) bool {
 }
 
 func GetById(inId string, isCache bool) (output Organization) {
+	inKey := "organization:" + inId
 	if isCache == true {
-		cacheData := organizationCache.Get("organization:" + inId)
-		if cacheData != nil {
-			output, _ = cacheData.(Organization)
+		err2 := organizationCache.GetD(inKey, &output)
+		if err2 == nil {
 			return output
 		}
 	}
@@ -87,7 +87,7 @@ func GetById(inId string, isCache bool) (output Organization) {
 	if err != nil || output.Delete != 0 {
 		output.ID = ""
 	} else {
-		organizationCache.Set("organization:"+inId, output, 0)
+		organizationCache.Set(inKey, output, 0)
 	}
 	return output
 }

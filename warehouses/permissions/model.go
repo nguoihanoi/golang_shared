@@ -86,10 +86,10 @@ func DeletePermission(inId string) bool {
 }
 
 func GetPermissionById(inId string, isCache bool) (output Permission) {
+	inKey := "permission:" + inId
 	if isCache == true {
-		cacheData := permissionCache.Get("permission:" + inId)
-		if cacheData != nil {
-			output, _ = cacheData.(Permission)
+		err2 := permissionCache.GetD(inKey, &output)
+		if err2 == nil {
 			return output
 		}
 	}
@@ -97,7 +97,7 @@ func GetPermissionById(inId string, isCache bool) (output Permission) {
 	if err != nil || output.Delete != 0 {
 		output.ID = ""
 	} else {
-		permissionCache.Set("permission:"+inId, output, 0)
+		permissionCache.Set(inKey, output, 0)
 	}
 	return output
 }
@@ -123,10 +123,10 @@ func CheckPermissionCode(inCode string, inId string) (output Permission) {
 }
 
 func GetPermissionsByType(inType string) (results []MiniPermission) {
-	cacheData := permissionCache.Get("permission_by_type:" + inType)
-	if cacheData != nil {
-		output, _ := cacheData.([]MiniPermission)
-		return output
+	inKey := "permission_by_type:" + inType
+	err2 := permissionCache.GetD(inKey, &results)
+	if err2 == nil {
+		return results
 	}
 
 	cursor, err := permissionCollection.Find(bSon.M{"delete": 0, "type_id": inType}, bSon.D{{Key: "delete", Value: 1}, {Key: "type_id", Value: 1}, {Key: "order", Value: 1}}, 0, 0)
@@ -134,7 +134,7 @@ func GetPermissionsByType(inType string) (results []MiniPermission) {
 		if err = cursor.All(context.TODO(), &results); err != nil {
 			log.Println(err)
 		}
-		permissionCache.Set("permission_by_type:"+inType, results, 0)
+		permissionCache.Set(inKey, results, 0)
 	}
 	return results
 }

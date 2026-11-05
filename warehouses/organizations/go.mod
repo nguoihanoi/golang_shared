@@ -3,7 +3,7 @@ module github.com/nguoihanoi/golang_shared/warehouses/organizations
 go 1.26.5
 
 require (
-	github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20260820100812-fd8d60ed8608
+	github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20261105083041-9310f3dd5f75
 	github.com/nguoihanoi/golang_shared/libs/database v0.0.0-20260820100812-fd8d60ed8608
 	go.mongodb.org/mongo-driver v1.17.9
 	go.mongodb.org/mongo-driver/v2 v2.8.0

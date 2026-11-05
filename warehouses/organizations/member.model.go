@@ -38,10 +38,10 @@ func DeleteMember(inId string) bool {
 }
 
 func GetMemberById(inId string, isCache bool) (output Member) {
+	inKey := "member:" + inId
 	if isCache == true {
-		cacheData := organizationCache.Get("member:" + inId)
-		if cacheData != nil {
-			output, _ = cacheData.(Member)
+		err2 := organizationCache.GetD(inKey, &output)
+		if err2 == nil {
 			return output
 		}
 	}
@@ -49,7 +49,7 @@ func GetMemberById(inId string, isCache bool) (output Member) {
 	if err != nil || output.Delete != 0 {
 		output.ID = ""
 	} else {
-		organizationCache.Set("member:"+inId, output, 0)
+		organizationCache.Set(inKey, output, 0)
 	}
 	return output
 }

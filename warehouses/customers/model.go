@@ -81,10 +81,10 @@ func DeleteGroup(inId string) bool {
 }
 
 func GetGroupById(inId string, isCache bool) (output CustomerGroup) {
+	inKey := "customer_group:" + inId
 	if isCache == true {
-		cacheData := customerCache.Get("customer_group:" + inId)
-		if cacheData != nil {
-			output, _ = cacheData.(CustomerGroup)
+		err2 := customerCache.GetD(inKey, &output)
+		if err2 == nil {
 			return output
 		}
 	}
@@ -92,7 +92,7 @@ func GetGroupById(inId string, isCache bool) (output CustomerGroup) {
 	if err != nil || output.Delete != 0 {
 		output.ID = ""
 	} else {
-		customerCache.Set("customer_group:"+inId, output, 0)
+		customerCache.Set(inKey, output, 0)
 	}
 	return output
 }
@@ -193,10 +193,10 @@ func DeleteCustomer(inId string) bool {
 }
 
 func GetCustomerById(inId string, isCache bool) (output Customer) {
+	inKey := "customer:" + inId
 	if isCache == true {
-		cacheData := customerCache.Get("customer:" + inId)
-		if cacheData != nil {
-			output, _ = cacheData.(Customer)
+		err2 := customerCache.GetD(inKey, &output)
+		if err2 == nil {
 			return output
 		}
 	}
@@ -204,7 +204,7 @@ func GetCustomerById(inId string, isCache bool) (output Customer) {
 	if err != nil {
 		output.ID = ""
 	} else {
-		customerCache.Set("customer:"+inId, output, 0)
+		customerCache.Set(inKey, output, 0)
 	}
 	return output
 }
