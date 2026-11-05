@@ -34,7 +34,7 @@ func (cache *Cache) Set(inKey string, inValue any, inTime time.Duration) {
 
 func formatData(inValue string) any {
 	var opValue any
-	err := json.Unmarshal([]byte(inValue), opValue)
+	err := json.Unmarshal([]byte(inValue), &opValue)
 	if err != nil {
 		log.Error(err)
 		return nil
