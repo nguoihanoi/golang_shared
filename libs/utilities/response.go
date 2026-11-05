@@ -15,12 +15,14 @@ import (
 type ResponseClass struct {
 	//radius float64 // Private field
 	cache *libCache.Cache
+	queue *libCache.Queue
 	key   string
 }
 
 func Response(inRedisClient *libCache.Cache, inKey string) *ResponseClass {
 	return &ResponseClass{
 		cache: inRedisClient,
+		queue: inRedisClient.NewQueue("queue_new_codes"),
 		key:   inKey + ":",
 	}
 }
@@ -30,6 +32,7 @@ func (r *ResponseClass) getCodeByKey(inKey, inLanguageCode string) string {
 		return val
 	}
 	r.cache.HSet(cacheKey, inKey, inKey)
+	r.queue.Push(inKey)
 	return inKey
 }
 

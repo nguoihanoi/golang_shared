@@ -48,6 +48,8 @@ github.com/muesli/termenv v0.16.0 h1:S5AlUN9dENB57rsbnkPyfdGuWIlkmzJjbFf0Tf5FWUc
 github.com/muesli/termenv v0.16.0/go.mod h1:ZRfOIKPFDYQoDFF4Olj7/QJbW60Ol/kL1pU3VfY/Cnk=
 github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20260818161833-6e418b97eb99 h1:tZzKhW8g2z0iYlaW0r9lGogl+wOiGT8G9HzdvN6xWco=
 github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20260818161833-6e418b97eb99/go.mod h1:FeOWVOe+7JcSsZZAc5/x4tTXTs7DjyKtI8BJT28NrWg=
+github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20261022100023-98334c8e4daf h1:fdrUHR+biwfWqsPrvCPtzt/v5+74ZdzeUNJIX2ei03I=
+github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20261022100023-98334c8e4daf/go.mod h1:FeOWVOe+7JcSsZZAc5/x4tTXTs7DjyKtI8BJT28NrWg=
 github.com/nguoihanoi/golang_shared/libs/crypto v0.0.0-20260727103103-eab92e6e930e h1:g67c7OGUP5zZaBytAdtLe1yuWBEiZEVsYiWE2Nnm8qY=
 github.com/nguoihanoi/golang_shared/libs/crypto v0.0.0-20260727103103-eab92e6e930e/go.mod h1:gghUNpZvckQOW6gJ3D/cvBt0YnSKBMkANIm1CwFLBsI=
 github.com/nguoihanoi/golang_shared/libs/process v0.0.0-20260727103103-eab92e6e930e h1:5VyWIBDf819eE77rVkxtPMnQouyScv5Oh8uAyz11q1A=

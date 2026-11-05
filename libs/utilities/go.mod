@@ -31,7 +31,7 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.16 // indirect
 	github.com/muesli/termenv v0.16.0 // indirect
-	github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20260818161833-6e418b97eb99 // indirect
+	github.com/nguoihanoi/golang_shared/libs/cache v0.0.0-20261022100023-98334c8e4daf // indirect
 	github.com/redis/go-redis/v9 v9.21.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/stretchr/testify v1.11.1 // indirect
