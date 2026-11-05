@@ -65,8 +65,9 @@ func Delete(inId string) bool {
 }
 
 func GetById(inId string, isCache bool) (output File) {
+	inKey := "file:" + inId
 	if isCache == true {
-		cacheData := fileCache.Get("file:" + inId)
+		cacheData := fileCache.Get(inKey)
 		if cacheData != nil {
 			output, _ = cacheData.(File)
 			return output
@@ -76,7 +77,7 @@ func GetById(inId string, isCache bool) (output File) {
 	if err != nil || output.Delete != 0 {
 		output.ID = ""
 	} else {
-		fileCache.Set("file:"+inId, output, 0)
+		fileCache.Set(inKey, output, 0)
 	}
 	return output
 }

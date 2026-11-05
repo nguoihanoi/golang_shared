@@ -49,6 +49,18 @@ func (cache *Cache) Get(inKey string) any {
 	return nil
 }
 
+func (cache *Cache) GetD(inKey string, output any) error {
+	cacheData, err := cache.Db.Get(cache.Ctx, cache.Prefix+inKey).Result()
+	if err == nil {
+		err = json.Unmarshal([]byte(cacheData), &output)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+	return err
+}
+
 func (cache *Cache) Del(inKey string) {
 	cache.Db.Del(cache.Ctx, cache.Prefix+inKey).Result()
 }
@@ -74,6 +86,18 @@ func (cache *Cache) HGet(inKey string, inProperty string) any {
 		return formatData(cacheData)
 	}
 	return nil
+}
+
+func (cache *Cache) HGetD(inKey string, inProperty string, output any) error {
+	cacheData, err := cache.Db.HGet(cache.Ctx, cache.Prefix+inKey, inProperty).Result()
+	if err == nil {
+		err = json.Unmarshal([]byte(cacheData), &output)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+	return err
 }
 
 func (cache *Cache) HDel(inKey string, inProperty string) {
