@@ -1,6 +1,9 @@
 package cache
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"log"
+)
 
 type Queue struct {
 	cache *Cache
@@ -15,13 +18,16 @@ func (cache *Cache) NewQueue(inName string) *Queue {
 }
 func (q *Queue) Push(inValue any) {
 	jsonString, _ := json.Marshal(inValue)
-	q.cache.Db.RPush(q.cache.Ctx, q.name, string(jsonString))
+	err := q.cache.Db.RPush(q.cache.Ctx, q.name, string(jsonString)).Err()
+	log.Println("queue cache push", err)
 }
 
 func (q *Queue) Pop() any {
 	cacheData, err := q.cache.Db.LPop(q.cache.Ctx, q.name).Result()
 	if err == nil {
 		return formatData(cacheData)
+	} else {
+		log.Println("queue cache pop", err)
 	}
 	return nil
 }
@@ -29,6 +35,8 @@ func (q *Queue) Count() int64 {
 	cacheData, err := q.cache.Db.LLen(q.cache.Ctx, q.name).Result()
 	if err == nil {
 		return cacheData
+	} else {
+		log.Println("queue cache count", err)
 	}
 	return 0
 }
@@ -38,6 +46,8 @@ func (q *Queue) Gets() (output []any) {
 		for i := range cacheData {
 			output = append(output, formatData(cacheData[i]))
 		}
+	} else {
+		log.Println("queue cache gets", err)
 	}
 	return output
 }
